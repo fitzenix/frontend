@@ -3,7 +3,7 @@ export const siteConfig = {
   tagline: "Gym Management Software for Owners, Trainers & Members",
   description:
     "Manage members, attendance, memberships, payments, staff and reports with FITZENIX — a complete gym management platform with Owner, Trainer and Member apps.",
-  url: process.env.NEXT_PUBLIC_APP_URL ?? "https://fitzenix.com",
+  url: process.env.NEXT_PUBLIC_APP_URL || "https://fitzenix.app",
   locale: "en_IN",
   supportEmail: "support@fitzenix.com",
   contactEmail: "hello@fitzenix.com",
