@@ -1,5 +1,5 @@
 const appUrl =
-  process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, "") ??
+  process.env.APP_URL?.replace(/\/$/, "") ??
   process.env.PUBLIC_APP_URL?.replace(/\/$/, "") ??
   "https://www.fitzenix.app";
 
