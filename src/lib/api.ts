@@ -23,9 +23,11 @@ import {
 const USE_REMOTE_API = process.env.NEXT_PUBLIC_USE_REMOTE_API !== "false";
 const REMOTE_API_ORIGIN =
   process.env.NEXT_PUBLIC_REMOTE_API_URL?.replace(/\/$/, "") ??
+  process.env.REMOTE_API_URL?.replace(/\/$/, "") ??
   "https://api.fitzenix.app";
 const LOCAL_API_ORIGIN =
-  process.env.NEXT_PUBLIC_LOCAL_API_URL?.replace(/\/$/, "") ?? "http://localhost:4000";
+  process.env.NEXT_PUBLIC_LOCAL_API_URL?.replace(/\/$/, "") ??
+  "http://localhost:4000";
 const API_PREFIX = process.env.NEXT_PUBLIC_API_PREFIX ?? "/api/v1";
 
 const API_ORIGIN =
