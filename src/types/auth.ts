@@ -20,6 +20,14 @@ export interface AuthSession extends AuthTokens {
   user: AuthUser;
 }
 
+export interface RegisterResponse {
+  needsEmailVerification: true;
+  email: string;
+  user: AuthUser;
+  gym: unknown;
+  otp?: string;
+}
+
 export interface ApiSuccess<T> {
   success: true;
   message?: string;
@@ -29,7 +37,7 @@ export interface ApiSuccess<T> {
 export interface ApiFailure {
   success: false;
   message?: string;
-  error?: string;
+  error?: string | { code?: string; message?: string; details?: unknown };
 }
 
 export interface LoginPayload {

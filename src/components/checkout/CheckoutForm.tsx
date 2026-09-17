@@ -4,13 +4,15 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { PaidPlanId } from "@/types/pricing";
-import type { CreateOrderResponse, VerifyPaymentResponse } from "@/types/payment";
 import type { CheckoutFormErrors, CheckoutFormValues } from "@/types/checkout";
 import { getPaidPlanById } from "@/config/pricing";
 import { formatCurrency } from "@/lib/formatCurrency";
 import { RAZORPAY_SCRIPT_URL } from "@/lib/constants";
+import { billingCheckoutRequest, billingVerifyRequest } from "@/lib/api";
 import { useAuth } from "@/context/AuthProvider";
 import { Button } from "@/components/common/Button";
+import { Analytics } from "@/lib/analytics";
+import { AnalyticsEvents } from "@/lib/analytics/events";
 import "@/types/razorpay";
 
 function loadRazorpayScript(): Promise<boolean> {
@@ -55,7 +57,7 @@ interface CheckoutFormProps {
 
 export function CheckoutForm({ planId }: CheckoutFormProps) {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, billing, refreshBilling } = useAuth();
   const plan = useMemo(() => getPaidPlanById(planId), [planId]);
   const [values, setValues] = useState<CheckoutFormValues>({
     gymName: "",
@@ -72,11 +74,12 @@ export function CheckoutForm({ planId }: CheckoutFormProps) {
     if (!user) return;
     setValues((prev) => ({
       ...prev,
+      gymName: prev.gymName || billing?.gymName || "",
       ownerName: prev.ownerName || user.name || "",
       email: prev.email || user.email || "",
       phone: prev.phone || user.phone || "",
     }));
-  }, [user]);
+  }, [user, billing]);
 
   if (!plan) {
     return (
@@ -100,58 +103,99 @@ export function CheckoutForm({ planId }: CheckoutFormProps) {
     if (Object.keys(nextErrors).length > 0) return;
 
     setLoading(true);
+    void Analytics.logEvent(AnalyticsEvents.CHECKOUT_STARTED, {
+      plan_id: planId,
+      plan_name: plan.name,
+      value: plan.price,
+      currency: plan.currency,
+    });
     try {
-      const orderRes = await fetch("/api/payment/create-order", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ planId }),
-      });
-      const orderData = (await orderRes.json()) as CreateOrderResponse | { message?: string };
-      if (!orderRes.ok || !("orderId" in orderData)) {
-        throw new Error("order_failed");
+      // Backend billing creates the order and activates the gym plan after verify.
+      const checkout = await billingCheckoutRequest(planId);
+
+      const goSuccess = async (paymentId: string, orderId: string, daysRemaining?: number | null) => {
+        void Analytics.logEvent(AnalyticsEvents.PAYMENT_SUCCESS, {
+          plan_id: planId,
+          plan_name: plan.name,
+          value: plan.price,
+          currency: plan.currency,
+          payment_id: paymentId,
+        });
+        await refreshBilling();
+        const params = new URLSearchParams({
+          plan: plan.name,
+          amount: String(plan.price),
+          paymentId,
+          orderId,
+          gym: values.gymName || billing?.gymName || "",
+          days: String(daysRemaining ?? ""),
+        });
+        router.push(`/payment/success?${params.toString()}`);
+      };
+
+      // Local/dev mock gateway — same path as the Fitzenix owner app.
+      if (checkout.mock && checkout.mockPaymentId && checkout.mockSignature) {
+        void Analytics.logEvent(AnalyticsEvents.PAYMENT_INITIATED, {
+          plan_id: planId,
+          method: "mock",
+        });
+        const verified = await billingVerifyRequest({
+          orderId: checkout.order.id,
+          paymentId: checkout.mockPaymentId,
+          signature: checkout.mockSignature,
+        });
+        await goSuccess(checkout.mockPaymentId, checkout.order.id, verified.access.daysRemaining);
+        setLoading(false);
+        return;
+      }
+
+      if (!checkout.keyId || checkout.keyId.includes("xxxx")) {
+        throw new Error(
+          "Razorpay is not configured on the API. Set valid RAZORPAY_KEY_ID / RAZORPAY_KEY_SECRET, then restart the API.",
+        );
       }
 
       const ready = await loadRazorpayScript();
-      if (!ready || !window.Razorpay) throw new Error("script_failed");
+      if (!ready || !window.Razorpay) {
+        throw new Error("Could not load Razorpay checkout. Check your network and try again.");
+      }
+
+      void Analytics.logEvent(AnalyticsEvents.PAYMENT_INITIATED, {
+        plan_id: planId,
+        method: "razorpay",
+      });
 
       const razorpay = new window.Razorpay({
-        key: orderData.keyId,
-        amount: orderData.amount,
-        currency: orderData.currency,
-        name: "FITZENIX",
-        description: `${orderData.planName} plan`,
-        order_id: orderData.orderId,
+        key: checkout.keyId,
+        amount: checkout.order.amount,
+        currency: checkout.order.currency,
+        name: checkout.name || "FITZENIX",
+        description: checkout.description || `${plan.name} plan`,
+        order_id: checkout.order.id,
         prefill: {
-          name: values.ownerName,
-          email: values.email,
-          contact: values.phone || undefined,
+          name: values.ownerName || checkout.prefill.name,
+          email: values.email || checkout.prefill.email,
+          contact: values.phone || checkout.prefill.contact,
         },
         theme: { color: "#D90429" },
         handler: async (response) => {
           try {
-            const verifyRes = await fetch("/api/payment/verify", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ ...response, planId }),
+            const verified = await billingVerifyRequest({
+              orderId: response.razorpay_order_id,
+              paymentId: response.razorpay_payment_id,
+              signature: response.razorpay_signature,
             });
-            const verifyData = (await verifyRes.json()) as
-              | VerifyPaymentResponse
-              | { message?: string };
-
-            if (!verifyRes.ok || !("success" in verifyData) || !verifyData.success) {
-              router.push("/payment/failure");
-              return;
-            }
-
-            const params = new URLSearchParams({
-              plan: verifyData.planName,
-              amount: String(verifyData.amount),
-              paymentId: verifyData.paymentId,
-              orderId: verifyData.orderId,
-              gym: values.gymName,
+            await goSuccess(
+              response.razorpay_payment_id,
+              response.razorpay_order_id,
+              verified.access.daysRemaining,
+            );
+          } catch (err) {
+            void Analytics.logEvent(AnalyticsEvents.PAYMENT_FAILED, {
+              plan_id: planId,
+              stage: "verify",
             });
-            router.push(`/payment/success?${params.toString()}`);
-          } catch {
+            setFormError(err instanceof Error ? err.message : "Payment verification failed.");
             router.push("/payment/failure");
           } finally {
             setLoading(false);
@@ -159,6 +203,7 @@ export function CheckoutForm({ planId }: CheckoutFormProps) {
         },
         modal: {
           ondismiss: () => {
+            void Analytics.logEvent(AnalyticsEvents.PAYMENT_CANCELLED, { plan_id: planId });
             setLoading(false);
             setFormError("Payment was cancelled. You can try again.");
           },
@@ -166,9 +211,14 @@ export function CheckoutForm({ planId }: CheckoutFormProps) {
       });
 
       razorpay.open();
-    } catch {
+    } catch (err) {
       setLoading(false);
-      setFormError("Something went wrong. Please try again.");
+      void Analytics.logEvent(AnalyticsEvents.PAYMENT_FAILED, {
+        plan_id: planId,
+        stage: "checkout",
+        reason: err instanceof Error ? err.message.slice(0, 80) : "unknown",
+      });
+      setFormError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
     }
   };
 
@@ -219,8 +269,8 @@ export function CheckoutForm({ planId }: CheckoutFormProps) {
               className={fieldClass}
               value={values.phone}
               onChange={(event) => onChange("phone", event.target.value)}
-              inputMode="numeric"
               autoComplete="tel"
+              inputMode="numeric"
             />
             {errors.phone ? <span className="mt-1 block text-xs text-danger">{errors.phone}</span> : null}
           </label>
@@ -250,13 +300,12 @@ export function CheckoutForm({ planId }: CheckoutFormProps) {
           <Link href="/privacy" className="text-brand-light hover:underline">
             Privacy Policy
           </Link>
-          . Card, UPI and bank details are collected only on Razorpay&apos;s secure checkout — FITZENIX
-          does not store them. Receipts may be sent via Zoho ZeptoMail.
+          . Card, UPI and bank details are collected only on Razorpay&apos;s secure checkout.
         </p>
 
         <div className="mt-4">
           <Button fullWidth size="lg" loading={loading} onClick={startPayment}>
-            Continue to Pay
+            Continue to Pay · {formatCurrency(plan.price)}
           </Button>
         </div>
       </div>

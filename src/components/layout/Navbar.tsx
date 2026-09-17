@@ -4,6 +4,12 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { mainNavigation } from "@/config/navigation";
 import { useAuth } from "@/context/AuthProvider";
+import {
+  expiresOnLabel,
+  planDisplayName,
+  planPriceLabel,
+  remainingDaysLabel,
+} from "@/lib/billingDisplay";
 import { Button } from "@/components/common/Button";
 import { Icon } from "@/components/common/Icon";
 import { Logo } from "@/components/common/Logo";
@@ -13,7 +19,7 @@ import { cn } from "@/lib/utils";
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const { user, isAuthenticated, loading, logout } = useAuth();
+  const { user, billing, isAuthenticated, loading, logout } = useAuth();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -21,6 +27,13 @@ export function Navbar() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  const planName = planDisplayName(billing);
+  const price = planPriceLabel(billing);
+  const daysLeft = remainingDaysLabel(billing);
+  const expiresOn = expiresOnLabel(billing);
+  const isTrial = billing?.access.reason === "trial";
+  const isPaid = Boolean(billing?.access.plan && billing.access.allowed);
 
   return (
     <>
@@ -47,15 +60,29 @@ export function Navbar() {
             ))}
           </nav>
 
-          <div className="hidden items-center gap-2 lg:flex">
+          <div className="hidden items-center gap-3 lg:flex">
             {loading ? null : isAuthenticated ? (
               <>
-                <span className="max-w-[140px] truncate text-sm text-text-secondary">
-                  {user?.name}
-                </span>
+                <div className="text-right">
+                  <p className="max-w-[160px] truncate text-sm font-semibold text-white">
+                    {user?.name}
+                  </p>
+                  {billing ? (
+                    <p className="max-w-[220px] truncate text-xs text-text-secondary">
+                      {planName}
+                      {price ? ` · ${price}` : ""}
+                      {daysLeft ? ` · ${daysLeft}` : ""}
+                    </p>
+                  ) : null}
+                  {expiresOn ? (
+                    <p className="text-[11px] text-text-muted">
+                      {isTrial ? "Trial ends" : "Renews"} {expiresOn}
+                    </p>
+                  ) : null}
+                </div>
                 <Link href="/#pricing">
-                  <Button size="sm" variant="outline">
-                    Choose a Plan
+                  <Button size="sm" variant={isPaid ? "outline" : "primary"}>
+                    {isPaid ? "Manage plan" : isTrial ? "Upgrade" : "Choose a Plan"}
                   </Button>
                 </Link>
                 <Button size="sm" variant="ghost" onClick={() => void logout()}>
