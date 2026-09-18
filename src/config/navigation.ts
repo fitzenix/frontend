@@ -17,17 +17,20 @@ export const footerProductLinks: NavItem[] = [
   { label: "Trainer App", href: "/#apps" },
   { label: "Member App", href: "/#apps" },
   { label: "Pricing", href: "/#pricing" },
+  { label: "Gym Management App", href: "/gym-management-app" },
 ];
 
 export const footerCompanyLinks: NavItem[] = [
-  { label: "About", href: "/#why" },
+  { label: "About FITZENIX", href: "/about-fitzenix" },
   { label: "Gym Management Software", href: "/gym-management-software" },
+  { label: "Member Management", href: "/gym-member-management-software" },
+  { label: "Attendance Software", href: "/gym-attendance-software" },
   { label: "Contact", href: "/#contact" },
 ];
 
 export const footerSupportLinks: NavItem[] = [
   { label: "FAQ", href: "/#faq" },
-  { label: "Help", href: `mailto:${process.env.NEXT_PUBLIC_SUPPORT_EMAIL ?? "support@fitzenix.com"}` },
+  { label: "Help", href: `mailto:${process.env.NEXT_PUBLIC_SUPPORT_EMAIL ?? "support@fitzenix.app"}` },
   { label: "Privacy Policy", href: "/privacy" },
   { label: "Terms & Conditions", href: "/terms" },
 ];

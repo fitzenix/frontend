@@ -9,7 +9,7 @@ import {
   ogImagePath,
 } from "@/config/seo";
 
-const page = getSeoLandingPage("gym-management-software")!;
+const page = getSeoLandingPage("gym-attendance-software")!;
 
 export const metadata: Metadata = {
   title: { absolute: `${page.title} | ${siteConfig.name}` },
@@ -24,21 +24,21 @@ export const metadata: Metadata = {
   },
 };
 
-export default function GymManagementSoftwarePage() {
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@graph": [
-      buildSoftwareApplicationJsonLd(),
-      buildBreadcrumbJsonLd([
-        { name: "Home", path: "/" },
-        { name: "Gym Management Software", path: `/${page.slug}` },
-      ]),
-    ],
-  };
-
+export default function GymAttendanceSoftwarePage() {
   return (
     <>
-      <JsonLd data={jsonLd} />
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@graph": [
+            buildSoftwareApplicationJsonLd(),
+            buildBreadcrumbJsonLd([
+              { name: "Home", path: "/" },
+              { name: "Gym Attendance Software", path: `/${page.slug}` },
+            ]),
+          ],
+        }}
+      />
       <SeoLandingView page={page} />
     </>
   );

@@ -162,6 +162,17 @@ export async function verifyOtpRequest(payload: {
   return session;
 }
 
+/** Resend OTP email (verify_email / login / reset). */
+export async function requestOtpRequest(payload: {
+  email: string;
+  purpose: "verify_email" | "login" | "reset";
+}): Promise<{ sent: true }> {
+  return request<{ sent: true }>("/auth/otp/request", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
 export async function fetchMe(): Promise<AuthUser> {
   return request<AuthUser>("/auth/me", { method: "GET" }, true);
 }

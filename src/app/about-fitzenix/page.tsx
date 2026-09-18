@@ -4,15 +4,16 @@ import { SeoLandingView } from "@/components/seo/SeoLandingView";
 import { siteConfig } from "@/config/site";
 import {
   buildBreadcrumbJsonLd,
+  buildOrganizationJsonLd,
   buildSoftwareApplicationJsonLd,
   getSeoLandingPage,
   ogImagePath,
 } from "@/config/seo";
 
-const page = getSeoLandingPage("gym-management-software")!;
+const page = getSeoLandingPage("about-fitzenix")!;
 
 export const metadata: Metadata = {
-  title: { absolute: `${page.title} | ${siteConfig.name}` },
+  title: { absolute: `${page.title}` },
   description: page.description,
   keywords: page.keywords,
   alternates: { canonical: `/${page.slug}` },
@@ -24,21 +25,22 @@ export const metadata: Metadata = {
   },
 };
 
-export default function GymManagementSoftwarePage() {
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@graph": [
-      buildSoftwareApplicationJsonLd(),
-      buildBreadcrumbJsonLd([
-        { name: "Home", path: "/" },
-        { name: "Gym Management Software", path: `/${page.slug}` },
-      ]),
-    ],
-  };
-
+export default function AboutFitzenixPage() {
   return (
     <>
-      <JsonLd data={jsonLd} />
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@graph": [
+            buildOrganizationJsonLd(),
+            buildSoftwareApplicationJsonLd(),
+            buildBreadcrumbJsonLd([
+              { name: "Home", path: "/" },
+              { name: "About FITZENIX", path: `/${page.slug}` },
+            ]),
+          ],
+        }}
+      />
       <SeoLandingView page={page} />
     </>
   );
