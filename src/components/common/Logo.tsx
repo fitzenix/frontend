@@ -9,10 +9,6 @@ interface LogoProps {
   compact?: boolean;
 }
 
-/**
- * Logo file is square with vertical black padding around the wordmark.
- * Fixed navbar height + object-cover crops that padding only (keeps F…X visible).
- */
 export function Logo({ className, compact = false }: LogoProps) {
   return (
     <Link
@@ -25,12 +21,12 @@ export function Logo({ className, compact = false }: LogoProps) {
       aria-label={`${siteConfig.name} home`}
     >
       <Image
-        src="/images/logo/fitzenix_logo.png"
+        src="/images/logo/Fitzenix.png"
         alt={siteConfig.name}
         fill
         priority
         sizes="188px"
-        className="object-cover object-center"
+        className="object-contain object-left"
       />
     </Link>
   );

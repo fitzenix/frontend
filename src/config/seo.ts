@@ -41,7 +41,7 @@ export function buildOrganizationJsonLd() {
     "@id": `${absoluteUrl()}/#organization`,
     name: siteConfig.name,
     url: absoluteUrl(),
-    logo: absoluteUrl("/images/logo/fitzenix_logo.png"),
+    logo: absoluteUrl("/images/logo/Fitzenix.png"),
     email: siteConfig.contactEmail,
     description: siteConfig.description,
     address: {

@@ -19,7 +19,7 @@ export default function manifest(): MetadataRoute.Manifest {
         type: "image/png",
       },
       {
-        src: "/images/logo/fitzenix_logo.png",
+        src: "/images/logo/fitzenix-mark.png",
         sizes: "512x512",
         type: "image/png",
       },
