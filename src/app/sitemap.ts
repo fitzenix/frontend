@@ -18,6 +18,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.95,
     },
+    ...[
+      "gym-management-app",
+      "gym-attendance-software",
+      "gym-member-management-software",
+      "gym-billing-software",
+    ].map((path) => ({
+      url: `${base}/${path}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.85,
+    })),
     {
       url: `${base}/privacy`,
       lastModified: now,

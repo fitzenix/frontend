@@ -52,7 +52,7 @@ export function buildOrganizationJsonLd() {
       addressCountry: "IN",
       streetAddress: `${siteConfig.address.locality}, ${siteConfig.address.city}`,
     },
-    sameAs: [] as string[],
+    sameAs: [...siteConfig.socialProfiles],
   };
 }
 
