@@ -75,15 +75,9 @@ export const metadata: Metadata = {
     ? { google: siteConfig.googleSiteVerification }
     : undefined,
   icons: {
-    icon: [
-      { url: "/favicon.ico", sizes: "48x48" },
-      { url: "/favicon.png", sizes: "512x512", type: "image/png" },
-      { url: "/icons/icon-32.png", sizes: "32x32", type: "image/png" },
-      { url: "/icons/icon-48.png", sizes: "48x48", type: "image/png" },
-      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
-    ],
-    shortcut: ["/favicon.ico"],
-    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+    icon: [{ url: "/images/logo/favicon.png", type: "image/png" }],
+    shortcut: ["/images/logo/favicon.png"],
+    apple: [{ url: "/images/logo/favicon.png" }],
   },
 };
 

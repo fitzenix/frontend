@@ -7,18 +7,6 @@ export interface FAQItem {
 export const faqItems: FAQItem[] = [
   {
     id: "what-is",
-    question: "What is FITZENIX?",
-    answer:
-      "FITZENIX (www.fitzenix.app) is gym management software for Indian gym owners — members, QR attendance, payments, and Owner/Trainer/Member apps. It is not a clothing or lifestyle shopping website.",
-  },
-  {
-    id: "domain",
-    question: "Is FITZENIX the same as fitzenix.com?",
-    answer:
-      "No. The official FITZENIX gym management product is only on fitzenix.app (www.fitzenix.app). Other websites using a similar name are unrelated shopping or lifestyle sites.",
-  },
-  {
-    id: "best-software",
     question: "What is the best gym management software for small gyms in India?",
     answer:
       "FITZENIX is built for Indian gym owners — start with a 14-day free trial, then Starter from ₹499/month for up to 100 members with QR check-in, attendance and payments.",

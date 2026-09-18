@@ -5,14 +5,7 @@ import type {
   AuthUser,
   LoginPayload,
   RegisterPayload,
-  RegisterResponse,
 } from "@/types/auth";
-import type {
-  BillingCheckoutResult,
-  BillingStatus,
-  BillingVerifyResult,
-  PaidPlanId,
-} from "@/types/billing";
 import {
   clearAuthSession,
   getAccessToken,
@@ -22,15 +15,12 @@ import {
 } from "@/lib/auth-storage";
 
 /**
- * Base URL resolution — mirrors Fitzenix/src/config/api.ts
- *
- * Health: https://api.fitzenix.app/health
- * App:    https://api.fitzenix.app/api/v1/...
- *
- * Local CORS bypass: NEXT_PUBLIC_USE_API_PROXY=true → /backend-api/* rewrite
+ * Base URL resolution — mirrors Fitzenix/src/api/client.ts
+ * NEXT_PUBLIC_USE_REMOTE_API=true  → production (api.fitzenix.app)
+ * NEXT_PUBLIC_USE_REMOTE_API=false → local :4000
+ * NEXT_PUBLIC_API_URL (optional)   → full override of the origin
  */
 const USE_REMOTE_API = process.env.NEXT_PUBLIC_USE_REMOTE_API !== "false";
-const USE_API_PROXY = process.env.NEXT_PUBLIC_USE_API_PROXY === "true";
 const REMOTE_API_ORIGIN =
   process.env.NEXT_PUBLIC_REMOTE_API_URL?.replace(/\/$/, "") ??
   process.env.REMOTE_API_URL?.replace(/\/$/, "") ??
@@ -46,48 +36,17 @@ const API_ORIGIN =
 
 /** Origin only (no `/api/v1`) — media / static assets. */
 export function apiOrigin(): string {
-  if (USE_API_PROXY && typeof window !== "undefined") {
-    return "/backend-api";
-  }
   return API_ORIGIN;
 }
 
-/** Full API base including `/api/v1`. */
+/** Full API base including `/api/v1` (same shape as mobile API_BASE_URL). */
 export function getApiBaseUrl(): string {
   const prefix = API_PREFIX.startsWith("/") ? API_PREFIX : `/${API_PREFIX}`;
-  if (USE_API_PROXY && typeof window !== "undefined") {
-    return `/backend-api${prefix}`;
-  }
   return `${API_ORIGIN}${prefix}`;
 }
 
 async function parseJson<T>(response: Response): Promise<T> {
   return (await response.json()) as T;
-}
-
-function errorMessage(payload: ApiFailure | ApiSuccess<unknown>): string {
-  if (!("success" in payload) || payload.success === true) {
-    return "Something went wrong. Please try again.";
-  }
-  const errField = payload.error;
-  if (typeof errField === "object" && errField) {
-    const base = errField.message?.trim();
-    const details = errField.details;
-    if (Array.isArray(details) && details.length > 0) {
-      const first = details[0] as { path?: string; message?: string };
-      const detail =
-        typeof first?.message === "string"
-          ? first.path
-            ? `${first.path}: ${first.message}`
-            : first.message
-          : null;
-      if (detail) return base ? `${base} (${detail})` : detail;
-    }
-    if (base) return base;
-  }
-  if (typeof errField === "string") return errField;
-  if (typeof payload.message === "string") return payload.message;
-  return "Something went wrong. Please try again.";
 }
 
 async function request<T>(
@@ -113,7 +72,11 @@ async function request<T>(
   const payload = await parseJson<ApiSuccess<T> | ApiFailure>(response);
 
   if (!response.ok || !("success" in payload) || payload.success !== true) {
-    throw new Error(errorMessage(payload));
+    const message =
+      ("message" in payload && payload.message) ||
+      ("error" in payload && payload.error) ||
+      "Something went wrong. Please try again.";
+    throw new Error(message);
   }
 
   return payload.data;
@@ -128,27 +91,13 @@ export async function loginRequest(payload: LoginPayload): Promise<AuthSession> 
   return data;
 }
 
-/** Signup — no tokens until email OTP is verified. */
-export async function registerRequest(payload: RegisterPayload): Promise<RegisterResponse> {
-  return request<RegisterResponse>("/auth/register", {
-    method: "POST",
-    body: JSON.stringify(payload),
-  });
-}
-
-/** Verify email OTP and create a session (tokens returned by backend). */
-export async function verifyOtpRequest(payload: {
-  email: string;
-  otp: string;
-  purpose: "verify_email";
-}): Promise<AuthSession> {
+export async function registerRequest(payload: RegisterPayload): Promise<AuthSession> {
   const data = await request<{
-    verified: true;
-    emailVerified: true;
     user: AuthUser;
+    gym: unknown;
     accessToken: string;
     refreshToken: string;
-  }>("/auth/otp/verify", {
+  }>("/auth/register", {
     method: "POST",
     body: JSON.stringify(payload),
   });
@@ -162,49 +111,8 @@ export async function verifyOtpRequest(payload: {
   return session;
 }
 
-/** Resend OTP email (verify_email / login / reset). */
-export async function requestOtpRequest(payload: {
-  email: string;
-  purpose: "verify_email" | "login" | "reset";
-}): Promise<{ sent: true }> {
-  return request<{ sent: true }>("/auth/otp/request", {
-    method: "POST",
-    body: JSON.stringify(payload),
-  });
-}
-
 export async function fetchMe(): Promise<AuthUser> {
   return request<AuthUser>("/auth/me", { method: "GET" }, true);
-}
-
-export async function fetchBillingStatus(): Promise<BillingStatus> {
-  return request<BillingStatus>("/billing/status", { method: "GET" }, true);
-}
-
-export async function billingCheckoutRequest(plan: PaidPlanId): Promise<BillingCheckoutResult> {
-  return request<BillingCheckoutResult>(
-    "/billing/checkout",
-    {
-      method: "POST",
-      body: JSON.stringify({ plan }),
-    },
-    true,
-  );
-}
-
-export async function billingVerifyRequest(payload: {
-  orderId: string;
-  paymentId: string;
-  signature: string;
-}): Promise<BillingVerifyResult> {
-  return request<BillingVerifyResult>(
-    "/billing/verify",
-    {
-      method: "POST",
-      body: JSON.stringify(payload),
-    },
-    true,
-  );
 }
 
 export async function refreshSession(): Promise<AuthSession | null> {

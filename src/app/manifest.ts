@@ -14,22 +14,14 @@ export default function manifest(): MetadataRoute.Manifest {
     lang: siteConfig.language,
     icons: [
       {
-        src: "/icons/icon-192.png",
+        src: "/images/logo/favicon.png",
         sizes: "192x192",
         type: "image/png",
-        purpose: "any",
       },
       {
-        src: "/icons/icon-512.png",
+        src: "/images/logo/fitzenix_logo.png",
         sizes: "512x512",
         type: "image/png",
-        purpose: "any",
-      },
-      {
-        src: "/icons/icon-512.png",
-        sizes: "512x512",
-        type: "image/png",
-        purpose: "maskable",
       },
     ],
   };

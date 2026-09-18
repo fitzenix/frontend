@@ -37,18 +37,16 @@ export function AuthForm({ initialMode = "login", nextPath = "/#pricing" }: Auth
     try {
       if (mode === "login") {
         await login({ email: email.trim(), password });
-        router.replace(nextPath);
       } else {
-        const result = await register({
+        await register({
           name: name.trim(),
           email: email.trim(),
           password,
           phone: phone.trim() || undefined,
           gymName: gymName.trim(),
         });
-        const next = encodeURIComponent(nextPath);
-        router.replace(`/verify-email?email=${encodeURIComponent(result.email)}&next=${next}`);
       }
+      router.replace(nextPath);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
     } finally {

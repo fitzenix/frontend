@@ -42,9 +42,8 @@ export function Footer() {
           <div className="lg:col-span-2">
             <Logo />
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-text-secondary">
-              Gym management software and app for Indian gym owners on{" "}
-              <span className="text-white">www.fitzenix.app</span> — members, QR attendance,
-              payments, trainers and reports. Not a shopping store.
+              Gym management software and app for Indian gym owners — members, QR attendance,
+              payments, trainers and reports in one place on web and mobile.
             </p>
             <p className="mt-4 text-sm text-text-muted">
               <a href={`mailto:${siteConfig.supportEmail}`} className="hover:text-white">

@@ -1,20 +1,11 @@
-"use client";
-
 import { pricingPlans } from "@/config/pricing";
-import { useAuth } from "@/context/AuthProvider";
 import { Container } from "@/components/common/Container";
 import { PricingCard } from "@/components/pricing/PricingCard";
-import { TrialStatusCard } from "@/components/pricing/TrialStatusCard";
 import { Icon } from "@/components/common/Icon";
 
 const trustBadges = ["No Setup Fee", "Cancel Anytime", "14-Day Free Trial"] as const;
 
 export function PricingSection() {
-  const { isAuthenticated, billing, loading } = useAuth();
-  const showLiveStatus = isAuthenticated && Boolean(billing) && !loading;
-  const paidPlans = pricingPlans.filter((plan) => !plan.isFreeTrial);
-  const trialPlan = pricingPlans.find((plan) => plan.isFreeTrial);
-
   return (
     <section id="pricing" className="section-pad border-y border-border bg-[#0a0a0a]">
       <Container>
@@ -24,31 +15,14 @@ export function PricingSection() {
             Simple pricing. Start small. Grow when you do.
           </h2>
           <p className="mt-3 text-sm font-medium text-text-secondary">
-            {showLiveStatus ? (
-              <>
-                Your gym <span className="text-white">{billing?.gymName}</span> —{" "}
-                <span className="text-brand">{billing?.access.message}</span>
-              </>
-            ) : (
-              <>
-                Start with a{" "}
-                <span className="text-success">14-day free trial</span> — no card required — then
-                pick Starter, Growth, or Pro.
-              </>
-            )}
+            Start with a{" "}
+            <span className="text-success">14-day free trial</span> — no card required — then
+            pick Starter, Growth, or Pro.
           </p>
         </div>
 
-        <div
-          className={
-            showLiveStatus
-              ? "mt-12 grid gap-5 sm:grid-cols-2 xl:grid-cols-4"
-              : "mt-12 grid gap-5 sm:grid-cols-2 xl:grid-cols-4"
-          }
-        >
-          {showLiveStatus && billing ? <TrialStatusCard billing={billing} /> : null}
-          {!showLiveStatus && trialPlan ? <PricingCard key={trialPlan.id} plan={trialPlan} /> : null}
-          {paidPlans.map((plan) => (
+        <div className="mt-12 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+          {pricingPlans.map((plan) => (
             <PricingCard key={plan.id} plan={plan} />
           ))}
         </div>

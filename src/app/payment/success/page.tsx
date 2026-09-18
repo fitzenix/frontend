@@ -17,7 +17,6 @@ interface SuccessPageProps {
     paymentId?: string;
     orderId?: string;
     gym?: string;
-    days?: string;
   }>;
 }
 
@@ -48,12 +47,6 @@ export default async function PaymentSuccessPage({ searchParams }: SuccessPagePr
             {amount > 0 ? formatCurrency(amount) : "—"}
           </dd>
         </div>
-        {params.days ? (
-          <div className="flex justify-between gap-4">
-            <dt className="text-text-muted">Plan remaining</dt>
-            <dd className="font-medium text-white">{params.days} days</dd>
-          </div>
-        ) : null}
         {params.paymentId ? (
           <div className="flex justify-between gap-4">
             <dt className="text-text-muted">Payment ID</dt>
