@@ -8,13 +8,15 @@ import { Button } from "@/components/common/Button";
 import { Icon } from "@/components/common/Icon";
 import { Logo } from "@/components/common/Logo";
 import { MobileMenu } from "@/components/layout/MobileMenu";
+import { PricingLink } from "@/components/layout/PricingLink";
+import { getPlanStatus } from "@/lib/plan-status";
 import { cn } from "@/lib/utils";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const { user, isAuthenticated, loading, logout } = useAuth();
-
+  const planStatus = getPlanStatus(user);
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
     onScroll();
@@ -50,14 +52,26 @@ export function Navbar() {
           <div className="hidden items-center gap-2 lg:flex">
             {loading ? null : isAuthenticated ? (
               <>
-                <span className="max-w-[140px] truncate text-sm text-text-secondary">
-                  {user?.name}
-                </span>
-                <Link href="/#pricing">
+                <div className="max-w-[190px] text-right">
+                  <p className="truncate text-sm text-text-secondary">{user?.name}</p>
+                  {planStatus.expired ? (
+                    <p className="text-xs font-semibold text-danger">Plan expired</p>
+                  ) : planStatus.name ? (
+                    <p className="truncate text-xs text-text-muted">
+                      {planStatus.name}
+                      {planStatus.daysRemaining !== null
+                        ? ` · ${planStatus.daysRemaining} ${planStatus.daysRemaining === 1 ? "day" : "days"} left`
+                        : null}
+                  </p>
+                  ) : (
+                    <p className="text-xs text-text-muted">No active plan</p>
+                  )}
+                </div>
+                <PricingLink>
                   <Button size="sm" variant="outline">
-                    Choose a Plan
+                    {planStatus.expired ? "Purchase a Plan" : "Choose a Plan"}
                   </Button>
-                </Link>
+                </PricingLink>
                 <Button size="sm" variant="ghost" onClick={() => void logout()}>
                   Logout
                 </Button>

@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { SeoLandingView } from "@/components/seo/SeoLandingView";
-import { siteConfig } from "@/config/site";
 
-const title = "Gym Management App for Owners, Trainers & Members";
-const description = "FITZENIX is a gym management app for Indian gyms with owner, trainer and member workflows, attendance, memberships, payments and reports in one platform.";
+const title = "Gym Management App | Fitzenix";
+const description =
+  "Fitzenix is a mobile-first gym management SaaS platform for gym owners, trainers, and members, with owner, trainer, and member app experiences.";
 
 export const metadata: Metadata = {
-  title: { absolute: `${title} | ${siteConfig.name}` },
+  title: { absolute: title },
   description,
   keywords: ["gym management app", "gym owner app", "fitness studio management app", "gym software India"],
   alternates: { canonical: "/gym-management-app" },
@@ -17,16 +17,20 @@ export default function GymManagementAppPage() {
   return <SeoLandingView data={{
     path: "/gym-management-app",
     eyebrow: "Gym management app",
-    title,
+    title: "Gym Management App for Owners, Trainers & Members",
     description,
     audience: "gym owners, trainers and members",
-    relatedPath: "/gym-management-software",
-    relatedLabel: "gym management software",
+    sectionTitle: "One app experience for each gym role",
+    audienceDescription:
+      "Owners use the dashboard and Owner app to see members, plans, payments, attendance, staff activity, and business reports. Trainer and Member apps support assigned members, workouts, progress, check-in, and membership details where included by plan.",
+    relatedLinks: [
+      { href: "/gym-management-software", label: "gym management software" },
+    ],
     features: [
-      { title: "Owner dashboard", body: "Manage members, plans, payments, staff and gym performance from web and mobile." },
-      { title: "Trainer and member apps", body: "Keep trainers and members connected with assigned workouts, sessions and membership details." },
-      { title: "QR attendance", body: "Let members check in quickly and give owners a reliable attendance history." },
-      { title: "Reports and renewals", body: "Track dues, renewals, revenue and member activity without spreadsheets." },
+      { title: "Owner and admin experience", body: "Manage members, plans, payments, staff activity, attendance, and business reports from the web dashboard and Owner app." },
+      { title: "Trainer experience", body: "Trainers can work with assigned members, workouts, and daily sessions in the Trainer app on supported plans." },
+      { title: "Member experience", body: "Members can check in, view membership details, follow workouts, and track progress in the Member app on supported plans." },
+      { title: "Web and mobile access", body: "Keep gym operations available across the owner web dashboard and role-specific mobile apps." },
     ],
   }} />;
 }

@@ -15,8 +15,9 @@ export interface SeoLandingData {
   description: string;
   features: readonly { title: string; body: string }[];
   audience: string;
-  relatedPath: string;
-  relatedLabel: string;
+  sectionTitle: string;
+  audienceDescription: string;
+  relatedLinks: readonly { href: string; label: string }[];
 }
 
 export function SeoLandingView({ data }: { data: SeoLandingData }) {
@@ -69,7 +70,7 @@ export function SeoLandingView({ data }: { data: SeoLandingData }) {
       <section className="section-pad">
         <Container>
           <h2 className="font-display text-2xl font-bold text-white sm:text-3xl">
-            Everything you need to run a {data.eyebrow.toLowerCase()}
+            {data.sectionTitle}
           </h2>
           <div className="mt-10 grid gap-6 sm:grid-cols-2">
             {data.features.map((feature) => (
@@ -86,10 +87,19 @@ export function SeoLandingView({ data }: { data: SeoLandingData }) {
         <Container className="max-w-3xl">
           <h2 className="font-display text-2xl font-bold text-white sm:text-3xl">Built for {data.audience}</h2>
           <p className="mt-4 text-sm leading-relaxed text-text-secondary">
-            FITZENIX brings members, attendance, plans, payments, trainers and reports into one gym management platform for Indian fitness businesses.
+            {data.audienceDescription}
           </p>
           <p className="mt-6 text-sm text-text-secondary">
-            Explore <Link href={data.relatedPath} className="text-brand-light hover:underline">{data.relatedLabel}</Link> or read the <Link href="/#faq" className="text-brand-light hover:underline">FITZENIX FAQ</Link>.
+            Learn more about{" "}
+            {data.relatedLinks.map((link, index) => (
+              <span key={link.href}>
+                {index > 0 ? ", " : null}
+                <Link href={link.href} className="text-brand-light hover:underline">
+                  {link.label}
+                </Link>
+              </span>
+            ))}{" "}
+            or read the <Link href="/#faq" className="text-brand-light hover:underline">FITZENIX FAQ</Link>.
           </p>
         </Container>
       </section>

@@ -6,6 +6,8 @@ import { mainNavigation } from "@/config/navigation";
 import { useAuth } from "@/context/AuthProvider";
 import { Button } from "@/components/common/Button";
 import { cn } from "@/lib/utils";
+import { getPlanStatus } from "@/lib/plan-status";
+import { PricingLink } from "@/components/layout/PricingLink";
 
 interface MobileMenuProps {
   open: boolean;
@@ -14,6 +16,7 @@ interface MobileMenuProps {
 
 export function MobileMenu({ open, onClose }: MobileMenuProps) {
   const { isAuthenticated, loading, logout, user } = useAuth();
+  const planStatus = getPlanStatus(user);
 
   useEffect(() => {
     if (!open) return;
@@ -66,10 +69,24 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
         <div className="mt-6 flex flex-col gap-3">
           {loading ? null : isAuthenticated ? (
             <>
-              <p className="px-1 text-sm text-text-secondary">Signed in as {user?.name}</p>
-              <Link href="/#pricing" onClick={onClose}>
-                <Button fullWidth>Choose a Plan</Button>
-              </Link>
+              <div className="px-1 text-sm text-text-secondary">
+                <p>Signed in as {user?.name}</p>
+                {planStatus.expired ? (
+                  <p className="mt-1 font-semibold text-danger">Your plan has expired</p>
+                ) : planStatus.name ? (
+                  <p className="mt-1 text-xs text-text-muted">
+                    {planStatus.name}
+                    {planStatus.daysRemaining !== null
+                      ? ` · ${planStatus.daysRemaining} ${planStatus.daysRemaining === 1 ? "day" : "days"} left`
+                      : null}
+                  </p>
+                ) : (
+                  <p className="mt-1 text-xs text-text-muted">No active plan</p>
+                )}
+              </div>
+              <PricingLink onNavigate={onClose}>
+                <Button fullWidth>{planStatus.expired ? "Purchase a Plan" : "Choose a Plan"}</Button>
+              </PricingLink>
               <Button
                 variant="outline"
                 fullWidth

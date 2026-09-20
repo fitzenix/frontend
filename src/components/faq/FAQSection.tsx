@@ -9,7 +9,7 @@ export function FAQSection() {
         <div className="mx-auto max-w-2xl text-center">
           <p className="text-xs font-bold uppercase tracking-[0.14em] text-brand">FAQ</p>
           <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
-            Practical answers for gym owners
+            Frequently Asked Questions
           </h2>
         </div>
 

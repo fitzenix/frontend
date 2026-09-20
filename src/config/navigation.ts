@@ -1,3 +1,5 @@
+import { siteConfig } from "@/config/site";
+
 export interface NavItem {
   label: string;
   href: string;
@@ -20,7 +22,7 @@ export const footerProductLinks: NavItem[] = [
 ];
 
 export const footerCompanyLinks: NavItem[] = [
-  { label: "About", href: "/#why" },
+  { label: "About Fitzenix", href: "/#about" },
   { label: "Gym Management Software", href: "/gym-management-software" },
   { label: "Gym Management App", href: "/gym-management-app" },
   { label: "Contact", href: "/#contact" },
@@ -30,7 +32,7 @@ export const footerSupportLinks: NavItem[] = [
   { label: "FAQ", href: "/#faq" },
   { label: "Gym Attendance Software", href: "/gym-attendance-software" },
   { label: "Gym Billing Software", href: "/gym-billing-software" },
-  { label: "Help", href: `mailto:${process.env.NEXT_PUBLIC_SUPPORT_EMAIL ?? "support@fitzenix.com"}` },
+  { label: "Help", href: `mailto:${siteConfig.supportEmail}` },
   { label: "Privacy Policy", href: "/privacy" },
   { label: "Terms & Conditions", href: "/terms" },
 ];

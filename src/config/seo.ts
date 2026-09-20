@@ -1,6 +1,5 @@
 import { siteConfig } from "@/config/site";
 import { faqItems } from "@/config/faq";
-import { getStartingPrice } from "@/config/pricing";
 
 /** Target queries for gym management software / app (India-first). */
 export const seoKeywords = [
@@ -21,11 +20,10 @@ export const seoKeywords = [
   "FITZENIX",
 ] as const;
 
-export const defaultTitle =
-  "Gym Management Software & App for Owners | FITZENIX";
+export const defaultTitle = "Fitzenix | Gym Management Software & SaaS";
 
 export const defaultDescription =
-  "FITZENIX is gym management software for Indian gym owners — members, QR attendance, payments, trainers and member apps in one platform. Start free for 14 days.";
+  "Fitzenix is a mobile-first gym management SaaS platform for gym owners, trainers, and fitness businesses. Manage members, attendance, payments, and daily operations.";
 
 export const ogImagePath = "/images/hero/hero_mobile.png";
 
@@ -39,8 +37,8 @@ export function buildOrganizationJsonLd() {
   return {
     "@type": "Organization",
     "@id": `${absoluteUrl()}/#organization`,
-    name: siteConfig.name,
-    url: absoluteUrl(),
+    name: "Fitzenix",
+    url: `${absoluteUrl()}/`,
     logo: absoluteUrl("/images/logo/Fitzenix.png"),
     email: siteConfig.contactEmail,
     description: siteConfig.description,
@@ -60,8 +58,8 @@ export function buildWebsiteJsonLd() {
   return {
     "@type": "WebSite",
     "@id": `${absoluteUrl()}/#website`,
-    url: absoluteUrl(),
-    name: siteConfig.name,
+    url: `${absoluteUrl()}/`,
+    name: "Fitzenix",
     description: defaultDescription,
     publisher: { "@id": `${absoluteUrl()}/#organization` },
     inLanguage: "en-IN",
@@ -69,25 +67,16 @@ export function buildWebsiteJsonLd() {
 }
 
 export function buildSoftwareApplicationJsonLd() {
-  const startingPrice = getStartingPrice();
   return {
     "@type": "SoftwareApplication",
     "@id": `${absoluteUrl()}/#software`,
-    name: siteConfig.name,
+    name: "Fitzenix",
     applicationCategory: "BusinessApplication",
-    applicationSubCategory: "Gym Management Software",
     operatingSystem: "Android, iOS, Web",
-    description: defaultDescription,
-    url: absoluteUrl(),
-    image: absoluteUrl(ogImagePath),
-    offers: {
-      "@type": "AggregateOffer",
-      priceCurrency: "INR",
-      lowPrice: String(startingPrice),
-      highPrice: "1999",
-      offerCount: 3,
-      availability: "https://schema.org/InStock",
-    },
+    description:
+      "Fitzenix is a mobile-first gym management SaaS platform for gym owners, trainers, and members.",
+    url: `${absoluteUrl()}/`,
+    author: { "@id": `${absoluteUrl()}/#organization` },
     featureList: [
       "Member management",
       "QR check-in attendance",
@@ -97,7 +86,6 @@ export function buildSoftwareApplicationJsonLd() {
       "Member app",
       "Reports and CRM",
     ],
-    publisher: { "@id": `${absoluteUrl()}/#organization` },
   };
 }
 

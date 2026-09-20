@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Hero } from "@/components/hero/Hero";
+import { AboutSection } from "@/components/sections/AboutSection";
 import { ValueSection } from "@/components/sections/ValueSection";
 import { OwnerFirstSection } from "@/components/sections/OwnerFirstSection";
 import { AppsSection } from "@/components/sections/AppsSection";
@@ -35,6 +36,7 @@ export default function HomePage() {
     <>
       <JsonLd data={buildHomeJsonLd()} />
       <Hero />
+      <AboutSection />
       <ValueSection />
       <OwnerFirstSection />
       <AppsSection />

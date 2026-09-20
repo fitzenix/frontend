@@ -1,10 +1,11 @@
 /** Marketing site URL only — never the API host (fixes robots.txt / sitemap / canonicals). */
 function resolveMarketingUrl(): string {
-  const fallback = "https://www.fitzenix.app";
+  const fallback = "https://fitzenix.app";
   const raw = (process.env.NEXT_PUBLIC_APP_URL ?? fallback).replace(/\/$/, "");
 
   try {
-    const { hostname } = new URL(raw);
+    const url = new URL(raw);
+    const hostname = url.hostname.toLowerCase();
     // Block API / local backend URLs from leaking into SEO metadata.
     if (
       hostname === "api.fitzenix.app" ||
@@ -13,7 +14,11 @@ function resolveMarketingUrl(): string {
     ) {
       return fallback;
     }
-    return raw;
+    if (hostname === "www.fitzenix.app") {
+      url.hostname = "fitzenix.app";
+    }
+
+    return url.origin;
   } catch {
     return fallback;
   }

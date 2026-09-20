@@ -3,6 +3,7 @@ import type {
   ApiSuccess,
   AuthSession,
   AuthUser,
+  BillingStatus,
   LoginPayload,
   RegisterPayload,
 } from "@/types/auth";
@@ -113,6 +114,10 @@ export async function registerRequest(payload: RegisterPayload): Promise<AuthSes
 
 export async function fetchMe(): Promise<AuthUser> {
   return request<AuthUser>("/auth/me", { method: "GET" }, true);
+}
+
+export async function fetchBillingStatus(): Promise<BillingStatus> {
+  return request<BillingStatus>("/billing/status", { method: "GET" }, true);
 }
 
 export async function refreshSession(): Promise<AuthSession | null> {

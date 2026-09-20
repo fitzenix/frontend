@@ -7,6 +7,11 @@ export const metadata: Metadata = {
   title: "Terms & Conditions",
   description: `${siteConfig.name} subscription terms, Razorpay checkout rules, free trial, refunds, and acceptable use.`,
   alternates: { canonical: "/terms" },
+  openGraph: {
+    title: "Terms & Conditions | Fitzenix",
+    description: `${siteConfig.name} subscription terms, Razorpay checkout rules, free trial, refunds, and acceptable use.`,
+    url: "/terms",
+  },
   robots: { index: true, follow: true },
 };
 
