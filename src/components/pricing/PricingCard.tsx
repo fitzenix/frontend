@@ -1,9 +1,13 @@
+"use client";
+
 import Link from "next/link";
 import type { PricingPlan } from "@/types/pricing";
 import { formatCurrency } from "@/lib/formatCurrency";
 import { Icon } from "@/components/common/Icon";
 import { Button } from "@/components/common/Button";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/context/AuthProvider";
+import { getPlanStatus } from "@/lib/plan-status";
 
 interface PricingCardProps {
   plan: PricingPlan;
@@ -11,7 +15,17 @@ interface PricingCardProps {
 
 export function PricingCard({ plan }: PricingCardProps) {
   const isTrial = plan.isFreeTrial === true;
-  const href = plan.ctaHref ?? `/checkout?plan=${plan.id}`;
+  const { user, loading, isAuthenticated } = useAuth();
+  const planStatus = getPlanStatus(user);
+  const subscription =
+    user?.subscription && typeof user.subscription === "object" ? user.subscription : null;
+  const trialReason = subscription?.reason;
+  const trialActive = isTrial && isAuthenticated && trialReason === "trial";
+  const trialExpired = isTrial && isAuthenticated && trialReason === "trial_expired";
+  const otherPlanActive = isTrial && isAuthenticated && trialReason === "ok";
+  const href = isTrial && !isAuthenticated
+    ? "/login?mode=signup&next=%2F%23pricing"
+    : plan.ctaHref ?? `/checkout?plan=${plan.id}`;
   const showPopular = plan.popular && !isTrial;
 
   return (
@@ -59,20 +73,45 @@ export function PricingCard({ plan }: PricingCardProps) {
       </ul>
 
       <div className="mt-8">
-        <Link href={href}>
-          <Button
-            fullWidth
-            variant={showPopular ? "primary" : isTrial ? "primary" : "outline"}
-            className={cn(
-              isTrial && "bg-success hover:bg-success/90",
-              !showPopular &&
-                !isTrial &&
-                "border-brand/50 text-brand-light hover:border-brand hover:text-white",
-            )}
-          >
-            {plan.ctaText}
+        {isTrial && loading ? (
+          <Button fullWidth disabled variant="outline">
+            Checking trial status...
           </Button>
-        </Link>
+        ) : trialActive ? (
+          <div className="flex min-h-11 items-center justify-center gap-2 rounded-xl border border-success/30 bg-success/10 px-4 text-sm font-semibold text-success">
+            <Icon name="check" className="size-4" />
+            {planStatus.daysRemaining === null
+              ? "Free trial active"
+              : `${planStatus.daysRemaining} ${planStatus.daysRemaining === 1 ? "day" : "days"} remaining`}
+          </div>
+        ) : trialExpired ? (
+          <div className="flex min-h-11 items-center justify-center rounded-xl border border-danger/30 bg-danger/10 px-4 text-sm font-semibold text-danger">
+            Free trial expired
+          </div>
+        ) : otherPlanActive ? (
+          <div className="flex min-h-11 items-center justify-center rounded-xl border border-border bg-background px-4 text-sm font-semibold text-text-secondary">
+            Plan already active
+          </div>
+        ) : isTrial && isAuthenticated ? (
+          <div className="flex min-h-11 items-center justify-center rounded-xl border border-border bg-background px-4 text-center text-sm font-medium text-text-secondary">
+            Trial status unavailable
+          </div>
+        ) : (
+          <Link href={href}>
+            <Button
+              fullWidth
+              variant={showPopular ? "primary" : isTrial ? "primary" : "outline"}
+              className={cn(
+                isTrial && "bg-success hover:bg-success/90",
+                !showPopular &&
+                  !isTrial &&
+                  "border-brand/50 text-brand-light hover:border-brand hover:text-white",
+              )}
+            >
+              {plan.ctaText}
+            </Button>
+          </Link>
+        )}
       </div>
     </article>
   );
