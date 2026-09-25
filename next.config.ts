@@ -19,8 +19,8 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/:path*",
-        has: [{ type: "host", value: "fitzenix.app" }],
-        destination: "https://www.fitzenix.app/:path*",
+        has: [{ type: "host", value: "www.fitzenix.app" }],
+        destination: "https://fitzenix.app/:path*",
         permanent: true,
       },
     ];

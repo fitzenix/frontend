@@ -6,26 +6,31 @@ export interface NavItem {
 }
 
 export const mainNavigation: NavItem[] = [
-  { label: "Product", href: "/#product" },
-  { label: "Features", href: "/#features" },
+  { label: "Solutions", href: "/solutions" },
+  { label: "Features", href: "/features" },
   { label: "Apps", href: "/#apps" },
-  { label: "Pricing", href: "/#pricing" },
+  { label: "Pricing", href: "/pricing" },
+  { label: "Resources", href: "/resources" },
+  { label: "Blog", href: "/blog" },
   { label: "FAQ", href: "/#faq" },
 ];
 
 export const footerProductLinks: NavItem[] = [
-  { label: "Features", href: "/#features" },
+  { label: "Features", href: "/features" },
   { label: "Owner App", href: "/#owner" },
   { label: "Trainer App", href: "/#apps" },
   { label: "Member App", href: "/#apps" },
-  { label: "Pricing", href: "/#pricing" },
+  { label: "Pricing", href: "/pricing" },
 ];
 
 export const footerCompanyLinks: NavItem[] = [
   { label: "About Fitzenix", href: "/#about" },
   { label: "Gym Management Software", href: "/gym-management-software" },
   { label: "Gym Management App", href: "/gym-management-app" },
-  { label: "Contact", href: "/#contact" },
+  { label: "Solutions", href: "/solutions" },
+  { label: "Blog", href: "/blog" },
+  { label: "Resources", href: "/resources" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export const footerSupportLinks: NavItem[] = [

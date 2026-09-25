@@ -160,6 +160,21 @@ export async function logoutRequest(): Promise<void> {
   }
 }
 
+export interface DemoRequestPayload {
+  name: string;
+  phone: string;
+  email: string;
+  city: string;
+  gymName: string;
+}
+
+export async function createDemoRequest(payload: DemoRequestPayload): Promise<{ received: boolean }> {
+  return request<{ received: boolean }>("/demo-requests", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
 export function getBearerToken(): string | null {
   return getAccessToken();
 }

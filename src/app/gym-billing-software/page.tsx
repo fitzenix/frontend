@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { SeoLandingView } from "@/components/seo/SeoLandingView";
 
-const title = "Gym Billing Software | Fitzenix";
+const title = "Gym Billing Software & Payment Management | FITZENIX";
 const description =
   "Fitzenix gym billing software helps owners track membership subscriptions, payments, pending dues, invoices, and revenue from one dashboard.";
 

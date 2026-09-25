@@ -1,35 +1,9 @@
-/** Marketing site URL only — never the API host (fixes robots.txt / sitemap / canonicals). */
-function resolveMarketingUrl(): string {
-  const fallback = "https://fitzenix.app";
-  const raw = (process.env.NEXT_PUBLIC_APP_URL ?? fallback).replace(/\/$/, "");
-
-  try {
-    const url = new URL(raw);
-    const hostname = url.hostname.toLowerCase();
-    // Block API / local backend URLs from leaking into SEO metadata.
-    if (
-      hostname === "api.fitzenix.app" ||
-      hostname === "localhost" ||
-      hostname.startsWith("127.0.0.1")
-    ) {
-      return fallback;
-    }
-    if (hostname === "www.fitzenix.app") {
-      url.hostname = "fitzenix.app";
-    }
-
-    return url.origin;
-  } catch {
-    return fallback;
-  }
-}
-
 export const siteConfig = {
   name: "FITZENIX",
   tagline: "Gym Management Software for Owners, Trainers & Members",
   description:
     "FITZENIX is gym management software for Indian gym owners — manage members, QR attendance, memberships, payments, trainers and reports with Owner, Trainer and Member apps on fitzenix.app.",
-  url: resolveMarketingUrl(),
+  url: "https://fitzenix.app",
   locale: "en_IN",
   language: "en-IN",
   supportEmail: "support@fitzenix.app",

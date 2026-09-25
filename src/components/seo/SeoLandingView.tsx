@@ -54,7 +54,7 @@ export function SeoLandingView({ data }: { data: SeoLandingData }) {
             {data.description} Start with a 14-day free trial, then plans from {formatCurrency(startingPrice)}/month.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <Link href="/#pricing">
+            <Link href="/pricing">
               <Button size="lg">
                 View pricing
                 <Icon name="arrow" className="size-4" />
@@ -99,7 +99,7 @@ export function SeoLandingView({ data }: { data: SeoLandingData }) {
                 </Link>
               </span>
             ))}{" "}
-            or read the <Link href="/#faq" className="text-brand-light hover:underline">FITZENIX FAQ</Link>.
+            or explore <Link href="/features" className="text-brand-light hover:underline">all FITZENIX features</Link>.
           </p>
         </Container>
       </section>

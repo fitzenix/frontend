@@ -4,6 +4,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { AuthProvider } from "@/context/AuthProvider";
 import { siteConfig } from "@/config/site";
+import { WhatsAppContact } from "@/components/layout/WhatsAppContact";
 import {
   defaultDescription,
   defaultTitle,
@@ -25,7 +26,7 @@ const display = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteConfig.url),
+  metadataBase: new URL("https://fitzenix.app"),
   title: {
     default: defaultTitle,
     template: `%s | ${siteConfig.name}`,
@@ -95,6 +96,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <Navbar />
           <main className="flex-1">{children}</main>
           <Footer />
+          <WhatsAppContact />
         </AuthProvider>
       </body>
     </html>

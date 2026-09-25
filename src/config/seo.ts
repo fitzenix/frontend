@@ -20,10 +20,10 @@ export const seoKeywords = [
   "FITZENIX",
 ] as const;
 
-export const defaultTitle = "Fitzenix | Gym Management Software & SaaS";
+export const defaultTitle = "FITZENIX | Gym Management Software & App for Gym Owners";
 
 export const defaultDescription =
-  "Fitzenix is a mobile-first gym management SaaS platform for gym owners, trainers, and fitness businesses. Manage members, attendance, payments, and daily operations.";
+  "FITZENIX is a gym management software and mobile app for managing members, attendance, trainers, memberships, payments and daily gym operations. Start your 14-day free trial. Plans from ₹499/month.";
 
 export const ogImagePath = "/images/hero/hero_mobile.png";
 
@@ -74,8 +74,14 @@ export function buildSoftwareApplicationJsonLd() {
     applicationCategory: "BusinessApplication",
     operatingSystem: "Android, iOS, Web",
     description:
-      "Fitzenix is a mobile-first gym management SaaS platform for gym owners, trainers, and members.",
+      "FITZENIX is gym management software for managing members, attendance, trainers, memberships and payments.",
     url: `${absoluteUrl()}/`,
+    offers: {
+      "@type": "Offer",
+      price: "499",
+      priceCurrency: "INR",
+      url: absoluteUrl("/pricing"),
+    },
     author: { "@id": `${absoluteUrl()}/#organization` },
     featureList: [
       "Member management",
@@ -126,5 +132,30 @@ export function buildBreadcrumbJsonLd(items: { name: string; path: string }[]) {
       name: item.name,
       item: absoluteUrl(item.path),
     })),
+  };
+}
+
+export function buildArticleJsonLd(article: {
+  title: string;
+  description: string;
+  path: string;
+  publishedAt: string;
+  modifiedAt: string;
+  imagePath?: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "@id": `${absoluteUrl(article.path)}#article`,
+    headline: article.title,
+    description: article.description,
+    url: absoluteUrl(article.path),
+    mainEntityOfPage: absoluteUrl(article.path),
+    datePublished: article.publishedAt,
+    dateModified: article.modifiedAt,
+    image: absoluteUrl(article.imagePath ?? ogImagePath),
+    author: { "@id": `${absoluteUrl()}/#organization`, name: "FITZENIX" },
+    publisher: { "@id": `${absoluteUrl()}/#organization`, name: "FITZENIX" },
+    inLanguage: "en-IN",
   };
 }

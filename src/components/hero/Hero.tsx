@@ -5,6 +5,7 @@ import { Button } from "@/components/common/Button";
 import { Container } from "@/components/common/Container";
 import { Icon } from "@/components/common/Icon";
 import { HeroApps } from "@/components/hero/HeroApps";
+import { DemoRequestTrigger } from "@/components/demo/DemoRequestTrigger";
 
 const trustPoints = [
   "No Card Required",
@@ -29,7 +30,7 @@ export function Hero() {
           </p>
 
           <h1 className="mt-4 font-display text-4xl font-bold leading-[1.1] tracking-tight text-white sm:text-5xl lg:text-[3.35rem]">
-            Modern Gym Management Software
+            Gym Management Software Built for Modern Gyms
           </h1>
 
           <p className="mt-5 max-w-md text-base leading-relaxed text-text-secondary sm:text-[17px]">
@@ -39,15 +40,10 @@ export function Hero() {
           </p>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <Link href="/#pricing">
-              <Button size="lg" className="w-full sm:w-auto">
-                Try Fitzenix Free
-                <Icon name="arrow" className="size-4" />
-              </Button>
-            </Link>
-            <Link href="/gym-management-software">
+            <DemoRequestTrigger />
+            <Link href="/features">
               <Button size="lg" variant="outline" className="w-full sm:w-auto">
-                Why Fitzenix
+                Explore Features
               </Button>
             </Link>
           </div>

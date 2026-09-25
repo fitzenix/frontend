@@ -13,7 +13,7 @@ import {
 import { getStartingPrice } from "@/config/pricing";
 import { formatCurrency } from "@/lib/formatCurrency";
 
-const title = "Gym Management Software | Fitzenix";
+const title = "Gym Management Software for Gym Owners | FITZENIX";
 const description =
   "Fitzenix is a mobile-first gym management SaaS platform for gym owners, trainers, and members. Manage members, memberships, attendance, trainers, subscriptions, payments, invoices, and reports from one platform.";
 
@@ -85,7 +85,7 @@ export default function GymManagementSoftwarePage() {
             Gym management software
           </p>
           <h1 className="mt-3 font-display text-3xl font-bold tracking-tight text-white sm:text-5xl">
-            Gym Management Software for Modern Gyms
+            Gym Management Software for Gym Owners
           </h1>
           <p className="mt-4 text-base leading-relaxed text-text-secondary">
             <strong className="font-semibold text-white">Fitzenix</strong> gives gym owners, trainers,

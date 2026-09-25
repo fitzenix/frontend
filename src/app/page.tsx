@@ -22,11 +22,17 @@ import {
 export const metadata: Metadata = {
   title: { absolute: defaultTitle },
   description: defaultDescription,
-  alternates: { canonical: "/" },
+  keywords: [
+    "gym management app",
+    "gym management software",
+    "gym management system",
+    "gym software India",
+  ],
+  alternates: { canonical: "https://fitzenix.app/" },
   openGraph: {
     title: defaultTitle,
     description: defaultDescription,
-    url: "/",
+    url: "https://fitzenix.app/",
     images: [{ url: ogImagePath, width: 1200, height: 630 }],
   },
 };
