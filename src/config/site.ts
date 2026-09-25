@@ -3,7 +3,7 @@ export const siteConfig = {
   tagline: "Gym Management Software for Owners, Trainers & Members",
   description:
     "FITZENIX is gym management software for Indian gym owners — manage members, QR attendance, memberships, payments, trainers and reports with Owner, Trainer and Member apps on fitzenix.app.",
-  url: "https://fitzenix.app",
+  url: "https://www.fitzenix.app",
   locale: "en_IN",
   language: "en-IN",
   supportEmail: "support@fitzenix.app",

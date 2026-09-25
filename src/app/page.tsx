@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { siteConfig } from "@/config/site";
 import { Hero } from "@/components/hero/Hero";
 import { AboutSection } from "@/components/sections/AboutSection";
 import { ValueSection } from "@/components/sections/ValueSection";
@@ -28,11 +29,11 @@ export const metadata: Metadata = {
     "gym management system",
     "gym software India",
   ],
-  alternates: { canonical: "https://fitzenix.app/" },
+  alternates: { canonical: `${siteConfig.url}/` },
   openGraph: {
     title: defaultTitle,
     description: defaultDescription,
-    url: "https://fitzenix.app/",
+    url: `${siteConfig.url}/`,
     images: [{ url: ogImagePath, width: 1200, height: 630 }],
   },
 };

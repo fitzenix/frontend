@@ -26,7 +26,7 @@ const display = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://fitzenix.app"),
+  metadataBase: new URL(siteConfig.url),
   title: {
     default: defaultTitle,
     template: `%s | ${siteConfig.name}`,
