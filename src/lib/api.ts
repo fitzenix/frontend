@@ -3,6 +3,7 @@ import type {
   ApiSuccess,
   AuthSession,
   AuthUser,
+  BillingStatus,
   LoginPayload,
   RegisterPayload,
   RegisterResponse,
@@ -33,9 +34,11 @@ const USE_REMOTE_API = process.env.NEXT_PUBLIC_USE_REMOTE_API !== "false";
 const USE_API_PROXY = process.env.NEXT_PUBLIC_USE_API_PROXY === "true";
 const REMOTE_API_ORIGIN =
   process.env.NEXT_PUBLIC_REMOTE_API_URL?.replace(/\/$/, "") ??
+  process.env.REMOTE_API_URL?.replace(/\/$/, "") ??
   "https://api.fitzenix.app";
 const LOCAL_API_ORIGIN =
-  process.env.NEXT_PUBLIC_LOCAL_API_URL?.replace(/\/$/, "") ?? "http://localhost:4000";
+  process.env.NEXT_PUBLIC_LOCAL_API_URL?.replace(/\/$/, "") ??
+  "http://localhost:4000";
 const API_PREFIX = process.env.NEXT_PUBLIC_API_PREFIX ?? "/api/v1";
 
 const API_ORIGIN =
@@ -243,6 +246,21 @@ export async function logoutRequest(): Promise<void> {
   } finally {
     clearAuthSession();
   }
+}
+
+export interface DemoRequestPayload {
+  name: string;
+  phone: string;
+  email: string;
+  city: string;
+  gymName: string;
+}
+
+export async function createDemoRequest(payload: DemoRequestPayload): Promise<{ received: boolean }> {
+  return request<{ received: boolean }>("/demo-requests", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
 }
 
 export function getBearerToken(): string | null {

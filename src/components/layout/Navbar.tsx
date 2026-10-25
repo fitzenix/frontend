@@ -14,6 +14,8 @@ import { Button } from "@/components/common/Button";
 import { Icon } from "@/components/common/Icon";
 import { Logo } from "@/components/common/Logo";
 import { MobileMenu } from "@/components/layout/MobileMenu";
+import { PricingLink } from "@/components/layout/PricingLink";
+import { getPlanStatus } from "@/lib/plan-status";
 import { cn } from "@/lib/utils";
 
 export function Navbar() {
@@ -84,7 +86,7 @@ export function Navbar() {
                   <Button size="sm" variant={isPaid ? "outline" : "primary"}>
                     {isPaid ? "Manage plan" : isTrial ? "Upgrade" : "Choose a Plan"}
                   </Button>
-                </Link>
+                </PricingLink>
                 <Button size="sm" variant="ghost" onClick={() => void logout()}>
                   Logout
                 </Button>

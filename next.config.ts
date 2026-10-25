@@ -15,13 +15,12 @@ const nextConfig: NextConfig = {
     formats: ["image/avif", "image/webp"],
     qualities: [70, 75, 88, 92],
   },
-  async redirects() {
+  /** Local Frontend → proxy → API origin (avoids CORS on localhost:3000) */
+  async rewrites() {
     return [
       {
-        source: "/:path*",
-        has: [{ type: "host", value: "fitzenix.app" }],
-        destination: "https://www.fitzenix.app/:path*",
-        permanent: true,
+        source: "/backend-api/:path*",
+        destination: `${API_ORIGIN}/:path*`,
       },
     ];
   },

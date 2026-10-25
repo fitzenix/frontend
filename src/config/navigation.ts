@@ -1,18 +1,22 @@
+import { siteConfig } from "@/config/site";
+
 export interface NavItem {
   label: string;
   href: string;
 }
 
 export const mainNavigation: NavItem[] = [
-  { label: "Product", href: "/#product" },
-  { label: "Features", href: "/#features" },
+  { label: "Solutions", href: "/solutions" },
+  { label: "Features", href: "/features" },
   { label: "Apps", href: "/#apps" },
-  { label: "Pricing", href: "/#pricing" },
+  { label: "Pricing", href: "/pricing" },
+  { label: "Resources", href: "/resources" },
+  { label: "Blog", href: "/blog" },
   { label: "FAQ", href: "/#faq" },
 ];
 
 export const footerProductLinks: NavItem[] = [
-  { label: "Features", href: "/#features" },
+  { label: "Features", href: "/features" },
   { label: "Owner App", href: "/#owner" },
   { label: "Trainer App", href: "/#apps" },
   { label: "Member App", href: "/#apps" },

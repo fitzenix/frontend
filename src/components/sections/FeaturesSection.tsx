@@ -16,7 +16,7 @@ export function FeaturesSection() {
         <div className="max-w-2xl">
           <p className="text-xs font-bold uppercase tracking-[0.14em] text-brand">Features</p>
           <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
-            Built around the problems gym owners solve every day.
+            Gym Management Features
           </h2>
         </div>
 

@@ -7,6 +7,11 @@ export const metadata: Metadata = {
   title: "Privacy Policy",
   description: `How ${siteConfig.name} handles personal data, Razorpay payments, and Zoho ZeptoMail transactional emails.`,
   alternates: { canonical: "/privacy" },
+  openGraph: {
+    title: "Privacy Policy | Fitzenix",
+    description: `How ${siteConfig.name} handles personal data, Razorpay payments, and Zoho ZeptoMail transactional emails.`,
+    url: "/privacy",
+  },
   robots: { index: true, follow: true },
 };
 

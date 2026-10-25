@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { resourceArticles, resourceCategories } from "@/config/resources";
 import { siteConfig } from "@/config/site";
 import { seoContentUpdated, seoLandingPages } from "@/config/seo";
 

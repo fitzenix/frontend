@@ -5,6 +5,7 @@ import { Button } from "@/components/common/Button";
 import { Container } from "@/components/common/Container";
 import { Icon } from "@/components/common/Icon";
 import { HeroApps } from "@/components/hero/HeroApps";
+import { DemoRequestTrigger } from "@/components/demo/DemoRequestTrigger";
 
 const trustPoints = [
   "No Card Required",
@@ -41,15 +42,10 @@ export function Hero() {
           </p>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <Link href="/#pricing">
-              <Button size="lg" className="w-full sm:w-auto">
-                Try Fitzenix Free
-                <Icon name="arrow" className="size-4" />
-              </Button>
-            </Link>
-            <Link href="/gym-management-software">
+            <DemoRequestTrigger />
+            <Link href="/features">
               <Button size="lg" variant="outline" className="w-full sm:w-auto">
-                Why Fitzenix
+                Explore Features
               </Button>
             </Link>
           </div>
