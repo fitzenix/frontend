@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { SeoLandingView } from "@/components/seo/SeoLandingView";
+import { getSeoLandingPage } from "@/config/seo";
 
 const title = "Gym Membership Management Software | FITZENIX";
 const description =
@@ -14,29 +15,6 @@ export const metadata: Metadata = {
 };
 
 export default function GymMembershipManagementPage() {
-  return (
-    <SeoLandingView
-      data={{
-        path: "/gym-membership-management",
-        eyebrow: "Gym membership management",
-        title: "Gym Membership Management Software",
-        description,
-        audience: "gym owners managing plans, memberships, and member relationships",
-        sectionTitle: "Keep memberships clear from signup to renewal",
-        audienceDescription:
-          "FITZENIX keeps member records, plans, membership status, payments, attendance, workouts, and progress connected so owners can manage the member relationship in one place.",
-        relatedLinks: [
-          { href: "/gym-member-management-software", label: "member management software" },
-          { href: "/gym-billing-software", label: "gym billing software" },
-          { href: "/pricing", label: "FITZENIX pricing" },
-        ],
-        features: [
-          { title: "Member plans", body: "Create and manage membership plans, durations, pricing, and member assignments." },
-          { title: "Member records", body: "Keep contact details, membership status, attendance, workouts, and progress together." },
-          { title: "Renewal context", body: "Use membership status and attendance history to support timely follow-up with members." },
-          { title: "Payments connected", body: "See plan payments and pending dues alongside the membership records they relate to." },
-        ],
-      }}
-    />
-  );
+  const page = getSeoLandingPage("gym-member-management-software");
+  return page ? <SeoLandingView page={page} /> : null;
 }

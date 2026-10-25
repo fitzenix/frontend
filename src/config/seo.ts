@@ -128,7 +128,7 @@ export function buildSoftwareApplicationJsonLd() {
       "@type": "Offer",
       price: "499",
       priceCurrency: "INR",
-      lowPrice: String(startingPrice),
+      lowPrice: String(getStartingPrice()),
       highPrice: "1999",
       offerCount: 3,
       availability: "https://schema.org/InStock",

@@ -3,7 +3,6 @@ import type {
   ApiSuccess,
   AuthSession,
   AuthUser,
-  BillingStatus,
   LoginPayload,
   RegisterPayload,
   RegisterResponse,
