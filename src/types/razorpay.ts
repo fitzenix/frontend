@@ -17,8 +17,13 @@ export interface RazorpayCheckoutOptions {
   modal?: { ondismiss?: () => void };
 }
 
+export interface RazorpayPaymentFailed {
+  error?: { description?: string; reason?: string };
+}
+
 export interface RazorpayInstance {
   open: () => void;
+  on: (event: "payment.failed", handler: (response: RazorpayPaymentFailed) => void) => void;
 }
 
 declare global {

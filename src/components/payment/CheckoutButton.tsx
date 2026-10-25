@@ -55,12 +55,14 @@ export function CheckoutButton({
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState<VerifyPaymentResponse | null>(null);
   const [failed, setFailed] = useState(false);
+  const [failureMessage, setFailureMessage] = useState<string | null>(null);
 
   const startCheckout = useCallback(async () => {
     if (!plan) return;
 
     setLoading(true);
     setFailed(false);
+    setFailureMessage(null);
 
     try {
       const orderRes = await fetch("/api/payment/create-order", {
@@ -120,9 +122,16 @@ export function CheckoutButton({
         modal: {
           ondismiss: () => {
             setLoading(false);
+            setFailureMessage("Payment was cancelled. You can try again.");
             setFailed(true);
           },
         },
+      });
+
+      razorpay.on("payment.failed", (response) => {
+        setLoading(false);
+        setFailureMessage(response.error?.description || "Payment failed. Please try again.");
+        setFailed(true);
       });
 
       razorpay.open();
@@ -181,11 +190,16 @@ export function CheckoutButton({
 
       <Modal open={failed && !success} onClose={() => setFailed(false)} title="Payment wasn't completed">
         <PaymentFailure
+          message={failureMessage}
           onRetry={() => {
             setFailed(false);
+            setFailureMessage(null);
             setConfirmOpen(true);
           }}
-          onClose={() => setFailed(false)}
+          onClose={() => {
+            setFailed(false);
+            setFailureMessage(null);
+          }}
         />
       </Modal>
     </>

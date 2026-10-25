@@ -29,15 +29,15 @@ export function Hero() {
           </p>
 
           <h1 className="mt-4 font-display text-4xl font-bold leading-[1.1] tracking-tight text-white sm:text-5xl lg:text-[3.35rem]">
-            Gym Management App
+            Gym Management Software
             <br />
             <span className="text-brand">That Runs Your Entire Gym</span>
           </h1>
 
           <p className="mt-5 max-w-md text-base leading-relaxed text-text-secondary sm:text-[17px]">
-            Members skip renewals, attendance is a notebook, and staff juggle three apps. FITZENIX
-            puts members, QR check-in, payments, trainers and reports in one gym management platform —
-            so you run the gym, not chase it.
+            Members skip renewals, attendance is a notebook, and staff juggle three apps. FITZENIX on{" "}
+            <span className="text-white">fitzenix.app</span> puts members, QR check-in, payments,
+            trainers and reports in one gym management platform — so you run the gym, not chase it.
           </p>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">

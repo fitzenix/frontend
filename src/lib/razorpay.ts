@@ -30,6 +30,9 @@ export async function createRazorpayOrder(planId: PaidPlanId) {
   }
 
   const amount = toSmallestCurrencyUnit(plan.price);
+  if (!Number.isInteger(amount) || amount < 100) {
+    throw new Error("Amount must be at least 100 paise");
+  }
   const client = getRazorpayClient();
 
   const order = await client.orders.create({

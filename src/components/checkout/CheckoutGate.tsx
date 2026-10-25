@@ -13,15 +13,18 @@ interface CheckoutGateProps {
 
 export function CheckoutGate({ planId }: CheckoutGateProps) {
   const router = useRouter();
-  const { isAuthenticated, loading } = useAuth();
+  const { user, isAuthenticated, loading } = useAuth();
 
   useEffect(() => {
     if (loading) return;
     if (!isAuthenticated) {
       const next = encodeURIComponent(`/checkout?plan=${planId}`);
       router.replace(`/login?mode=signup&next=${next}`);
+    } else if (user && !user.emailVerified) {
+      const next = encodeURIComponent(`/checkout?plan=${planId}`);
+      router.replace(`/verify-email?email=${encodeURIComponent(user.email)}&next=${next}`);
     }
-  }, [loading, isAuthenticated, planId, router]);
+  }, [loading, isAuthenticated, planId, router, user]);
 
   if (loading) {
     return (
@@ -31,7 +34,7 @@ export function CheckoutGate({ planId }: CheckoutGateProps) {
     );
   }
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated || (user && !user.emailVerified)) {
     return (
       <p className="text-center text-sm text-text-secondary">
         Redirecting to login / sign up before checkout…
