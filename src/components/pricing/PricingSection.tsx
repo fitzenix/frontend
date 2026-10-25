@@ -2,7 +2,6 @@
 
 import type { PricingPlan } from "@/types/pricing";
 import { pricingPlans } from "@/config/pricing";
-import { siteConfig } from "@/config/site";
 import { useAuth } from "@/context/AuthProvider";
 import { PricingCard } from "@/components/pricing/PricingCard";
 import { PricingGlyph, type PricingGlyphName } from "@/components/pricing/PricingGlyph";
@@ -23,8 +22,8 @@ const highlights: { icon: PricingGlyphName; title: string; text: string }[] = [
 
 function cardHref(plan: PricingPlan, isAuthenticated: boolean): string {
   if (plan.isCustom) return plan.ctaHref ?? "/#contact";
+  if (!isAuthenticated) return "/login?mode=signup";
   if (plan.ctaHref) return plan.ctaHref;
-  if (!isAuthenticated) return siteConfig.loginUrl;
   return `/checkout?plan=${plan.id}`;
 }
 
