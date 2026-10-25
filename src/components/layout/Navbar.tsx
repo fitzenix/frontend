@@ -82,7 +82,7 @@ export function Navbar() {
                     </p>
                   ) : null}
                 </div>
-                <Link href="/#pricing">
+                <PricingLink>
                   <Button size="sm" variant={isPaid ? "outline" : "primary"}>
                     {isPaid ? "Manage plan" : isTrial ? "Upgrade" : "Choose a Plan"}
                   </Button>

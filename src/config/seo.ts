@@ -193,6 +193,36 @@ export function buildBreadcrumbJsonLd(items: { name: string; path: string }[]) {
   };
 }
 
+export function buildArticleJsonLd({
+  title,
+  description,
+  path,
+  publishedAt,
+  modifiedAt,
+}: {
+  title: string;
+  description: string;
+  path: string;
+  publishedAt: string;
+  modifiedAt: string;
+}) {
+  const url = absoluteUrl(path);
+
+  return {
+    "@type": "BlogPosting",
+    headline: title,
+    description,
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    url,
+    image: absoluteUrl(ogImagePath),
+    datePublished: publishedAt,
+    dateModified: modifiedAt,
+    author: { "@type": "Organization", name: siteConfig.name, url: absoluteUrl() },
+    publisher: { "@id": `${absoluteUrl()}/#organization` },
+    inLanguage: "en-IN",
+  };
+}
+
 const googleBot: Metadata["robots"] = {
   index: true,
   follow: true,

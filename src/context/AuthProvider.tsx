@@ -18,7 +18,6 @@ import {
 import {
   fetchBillingStatus,
   fetchMe,
-  fetchBillingStatus,
   loginRequest,
   logoutRequest,
   refreshSession,
