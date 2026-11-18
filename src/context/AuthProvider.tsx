@@ -187,10 +187,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setBilling(await loadBillingSafe());
   }, []);
 
-  const refreshBilling = useCallback(async () => {
-    setBilling(await loadBillingSafe());
-  }, []);
-
   const value = useMemo(
     () => ({
       user,
