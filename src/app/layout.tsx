@@ -37,7 +37,10 @@ export const metadata: Metadata = {
   creator: siteConfig.name,
   publisher: siteConfig.name,
   category: "Gym Management Software",
-  alternates: { canonical: "/" },
+  alternates: {
+    canonical: "/",
+    languages: { "en-IN": "/", "x-default": "/" },
+  },
   openGraph: {
     type: "website",
     locale: siteConfig.locale,
@@ -75,15 +78,24 @@ export const metadata: Metadata = {
     ? { google: siteConfig.googleSiteVerification }
     : undefined,
   icons: {
-    icon: [{ url: "/images/logo/favicon.png", type: "image/png" }],
-    shortcut: ["/images/logo/favicon.png"],
-    apple: [{ url: "/images/logo/favicon.png" }],
+    // Google SERP favicon: crawlable /favicon.ico (square ≥48px) — see scripts/generate-favicons.mjs
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icons/icon-48.png", sizes: "48x48", type: "image/png" },
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/favicon.png", sizes: "512x512", type: "image/png" },
+    ],
+    shortcut: ["/favicon.ico"],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang={siteConfig.language} className={`${sans.variable} ${display.variable} h-full antialiased`}>
+    <html
+      lang={siteConfig.language}
+      className={`${sans.variable} ${display.variable} h-full antialiased`}
+    >
       <body className="flex min-h-full flex-col bg-background pb-16 font-sans text-text-primary md:pb-0">
         <AuthProvider>
           <Navbar />

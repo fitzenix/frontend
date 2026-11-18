@@ -4,13 +4,14 @@ import { Button } from "@/components/common/Button";
 interface PaymentFailureProps {
   onRetry: () => void;
   onClose: () => void;
+  message?: string | null;
 }
 
-export function PaymentFailure({ onRetry, onClose }: PaymentFailureProps) {
+export function PaymentFailure({ onRetry, onClose, message }: PaymentFailureProps) {
   return (
     <div>
       <p className="text-sm leading-relaxed text-text-secondary">
-        Your payment was not successful. You can try again or return to pricing.
+        {message || "Your payment was not successful. You can try again or return to pricing."}
       </p>
       <div className="mt-6 flex flex-col gap-3">
         <Button fullWidth onClick={onRetry}>

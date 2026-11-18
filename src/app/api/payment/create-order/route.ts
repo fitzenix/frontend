@@ -41,9 +41,31 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     console.error("[payment/create-order]", error);
+    const razorpayErr = error as {
+      statusCode?: number;
+      error?: { description?: string; code?: string };
+      message?: string;
+    };
+    const razorpayDescription = razorpayErr?.error?.description;
+    let message = "Something went wrong. Please try again.";
+    let status = 500;
+    if (razorpayErr?.statusCode === 401 || /Authentication failed/i.test(razorpayDescription ?? "")) {
+      status = 401;
+      message =
+        "Razorpay authentication failed. Use valid test Key ID + Secret from the Razorpay Dashboard (or pay via Backend billing).";
+    } else if (
+      error instanceof Error &&
+      /Missing required environment variable|razorpay|key/i.test(error.message)
+    ) {
+      status = 500;
+      message =
+        "Payment is not configured. Add valid Razorpay keys to the Frontend .env (or use Backend billing).";
+    } else if (razorpayDescription) {
+      message = razorpayDescription;
+    }
     return NextResponse.json(
-      { success: false, message: "Something went wrong. Please try again." },
-      { status: 500 },
+      { success: false, error: { code: status === 401 ? "UNAUTHORIZED" : "SERVER_ERROR", message }, message },
+      { status },
     );
   }
 }
