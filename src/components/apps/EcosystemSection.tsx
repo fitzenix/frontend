@@ -12,7 +12,7 @@ const roleIcons = {
 
 export function EcosystemSection() {
   return (
-    <section id="apps" className="section-pad">
+    <section id="apps" className="section-pad overflow-x-clip">
       <Container>
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
           <div className="relative order-2 lg:order-1">

@@ -1,9 +1,13 @@
+"use client";
+
 import Link from "next/link";
 import type { PricingPlan } from "@/types/pricing";
 import { formatCurrency } from "@/lib/formatCurrency";
 import { Icon } from "@/components/common/Icon";
 import { PricingGlyph } from "@/components/pricing/PricingGlyph";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/context/AuthProvider";
+import { getPlanStatus } from "@/lib/plan-status";
 
 interface PricingCardProps {
   plan: PricingPlan;

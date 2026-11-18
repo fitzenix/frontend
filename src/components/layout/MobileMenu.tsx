@@ -13,6 +13,8 @@ import {
 import { Button } from "@/components/common/Button";
 import { MEMBER_CHECK_IN_PATH } from "@/lib/postLoginPath";
 import { cn } from "@/lib/utils";
+import { getPlanStatus } from "@/lib/plan-status";
+import { PricingLink } from "@/components/layout/PricingLink";
 
 interface MobileMenuProps {
   open: boolean;

@@ -112,14 +112,12 @@ export function buildWebsiteJsonLd() {
 }
 
 export function buildSoftwareApplicationJsonLd() {
-  const startingPrice = getStartingPrice();
   return {
     "@type": "SoftwareApplication",
     "@id": `${absoluteUrl()}/#software`,
     name: "FITZENIX Gym Management Software",
     alternateName: "FITZENIX",
     applicationCategory: "BusinessApplication",
-    applicationSubCategory: "Gym Management Software",
     operatingSystem: "Android, iOS, Web",
     description: defaultDescription,
     url: absoluteUrl(),
@@ -127,14 +125,16 @@ export function buildSoftwareApplicationJsonLd() {
     downloadUrl: absoluteUrl(),
     installUrl: absoluteUrl("/login"),
     offers: {
-      "@type": "AggregateOffer",
+      "@type": "Offer",
+      price: "499",
       priceCurrency: "INR",
-      lowPrice: String(startingPrice),
+      lowPrice: String(getStartingPrice()),
       highPrice: "1999",
       offerCount: 3,
       availability: "https://schema.org/InStock",
       url: absoluteUrl("/#pricing"),
     },
+    author: { "@id": `${absoluteUrl()}/#organization` },
     featureList: [
       "Member management",
       "QR check-in attendance",

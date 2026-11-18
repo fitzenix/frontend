@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { siteConfig } from "@/config/site";
 import { Hero } from "@/components/hero/Hero";
+import { AboutSection } from "@/components/sections/AboutSection";
 import { ValueSection } from "@/components/sections/ValueSection";
 import { OwnerFirstSection } from "@/components/sections/OwnerFirstSection";
 import { AppsSection } from "@/components/sections/AppsSection";
@@ -29,7 +31,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: defaultTitle,
     description: defaultDescription,
-    url: "/",
+    url: `${siteConfig.url}/`,
     images: [{ url: ogImagePath, width: 1200, height: 630 }],
   },
 };
@@ -39,6 +41,7 @@ export default function HomePage() {
     <>
       <JsonLd data={buildHomeJsonLd()} />
       <Hero />
+      <AboutSection />
       <ValueSection />
       <OwnerFirstSection />
       <AppsSection />

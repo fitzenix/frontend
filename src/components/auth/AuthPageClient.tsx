@@ -22,14 +22,6 @@ export function AuthPageClient({ nextPath, initialMode }: AuthPageClientProps) {
     }
   }, [loading, isAuthenticated, nextPath, router, user]);
 
-  if (loading) {
-    return (
-      <div className="flex justify-center py-20">
-        <LoadingSpinner label="Checking session" />
-      </div>
-    );
-  }
-
   if (isAuthenticated) {
     return null;
   }
