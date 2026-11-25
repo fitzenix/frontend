@@ -1,5 +1,4 @@
 import type { MetadataRoute } from "next";
-import { resourceArticles, resourceCategories } from "@/config/resources";
 import { siteConfig } from "@/config/site";
 import { seoContentUpdated, seoLandingPages } from "@/config/seo";
 
@@ -26,6 +25,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: seoContentUpdated,
       changeFrequency: "yearly",
       priority: 0.2,
+    },
+    {
+      url: `${base}/delete-account`,
+      lastModified: seoContentUpdated,
+      changeFrequency: "yearly",
+      priority: 0.3,
     },
     {
       url: `${base}/terms`,

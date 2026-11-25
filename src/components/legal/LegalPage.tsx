@@ -103,6 +103,11 @@ export function LegalPage({ title, description, intro, sections, active }: Legal
               <Link href={active === "privacy" ? "/terms" : "/privacy"} className="text-brand-light hover:underline">
                 {active === "privacy" ? "Read Terms & Conditions" : "Read Privacy Policy"}
               </Link>
+              {active === "privacy" && (
+                <Link href="/delete-account" className="text-brand-light hover:underline">
+                  Delete your account
+                </Link>
+              )}
               <Link href="/#pricing" className="text-brand-light hover:underline">
                 Back to pricing
               </Link>

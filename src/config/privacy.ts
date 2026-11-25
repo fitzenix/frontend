@@ -78,7 +78,11 @@ export const privacySections: LegalSection[] = [
     id: "retention",
     title: "7. Data retention",
     paragraphs: [
-      "We retain account and billing records for as long as your account is active and for a reasonable period afterward to meet legal, tax, accounting, dispute, and fraud-prevention requirements. Payment gateway records may also be retained by Razorpay under their policies.",
+      "When an account deletion request is verified, we remove or anonymize personal profile information, profile images, attendance and fitness records, user-authored social content, messages, notification data, credentials, and active sessions from FITZENIX systems, subject to applicable legal and security needs.",
+      "We may retain the minimum payment, invoice, and business records necessary for legal, tax, accounting, fraud-prevention, or dispute purposes. We minimize personal information in those records where feasible. Gym business records and other users’ accounts are not automatically deleted by an individual request. Razorpay and other infrastructure providers may retain data under their own policies and legal obligations.",
+      "Minimal account-deletion request status and support-review details may be kept to document the outcome and protect service security.",
+      "FITZENIX has not yet approved numeric retention periods for these retained records. Applicable periods must be confirmed by FITZENIX’s legal and business owners before production release; we do not state an unverified duration. Contact support@fitzenix.app for current handling information.",
+      "Request account deletion at https://www.fitzenix.app/delete-account. Gym-owner requests require a support-reviewed ownership transfer or gym closure before the owner account can be deleted.",
     ],
   },
   {
@@ -99,7 +103,7 @@ export const privacySections: LegalSection[] = [
     title: "9. Your choices & rights",
     bullets: [
       "Access or update account profile information from your account settings (where available).",
-      "Request correction or deletion of personal data by emailing support, subject to legal retention needs.",
+      "Request account deletion at https://www.fitzenix.app/delete-account or contact support@fitzenix.app. Verification and legal retention requirements apply.",
       "Contact us about payment receipts or billing questions using your registered email.",
     ],
   },

@@ -321,6 +321,46 @@ export async function createDemoRequest(payload: DemoRequestPayload): Promise<{ 
   });
 }
 
+export type AccountDeletionRole = "gym_owner" | "trainer_staff" | "member";
+export type AccountDeletionStatus =
+  | "pending_verification"
+  | "processing"
+  | "awaiting_support_review"
+  | "completed"
+  | "failed";
+
+export async function requestAccountDeletion(payload: {
+  identity: string;
+  role: AccountDeletionRole;
+  gymName?: string;
+  reason?: string;
+}): Promise<{ requestId: string; trackingToken: string; status: AccountDeletionStatus }> {
+  return request<{ requestId: string; trackingToken: string; status: AccountDeletionStatus }>("/account/deletion/request", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function verifyAccountDeletion(payload: {
+  requestId: string;
+  code: string;
+}): Promise<{ requestId: string; status: AccountDeletionStatus }> {
+  return request<{ requestId: string; status: AccountDeletionStatus }>("/account/deletion/verify", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function fetchAccountDeletionStatus(payload: {
+  requestId: string;
+  trackingToken: string;
+}): Promise<{ status: AccountDeletionStatus }> {
+  return request<{ status: AccountDeletionStatus }>("/account/deletion/status", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
 export function getBearerToken(): string | null {
   return getAccessToken();
 }
