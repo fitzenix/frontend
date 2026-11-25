@@ -57,6 +57,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [billing, setBilling] = useState<BillingStatus | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const loadUserWithBilling = useCallback(async (authUser: AuthUser): Promise<AuthUser> => {
+    try {
+      const { access } = await fetchBillingStatus();
+      return {
+        ...authUser,
+        subscription: {
+          planId: access.plan ?? undefined,
+          planName: access.plan ?? (access.reason.includes("trial") ? "14-Day Free Trial" : undefined),
+          reason: access.reason,
+          status: access.allowed ? "active" : "expired",
+          trialEndsAt: access.trialEndsAt ?? undefined,
+          endDate: access.planPeriodEnd ?? undefined,
+          daysRemaining: access.daysRemaining,
+          message: access.message,
+        },
+      };
+    } catch {
+      return authUser;
+    }
+  }, []);
+
   useEffect(() => {
     let active = true;
 
@@ -94,7 +115,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => {
       active = false;
     };
-  }, []);
+  }, [loadUserWithBilling]);
 
   const login = useCallback(async (payload: LoginPayload) => {
     void Analytics.logEvent(AnalyticsEvents.LOGIN_STARTED, { method: "password" });
@@ -161,7 +182,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const refreshUser = useCallback(async () => {
     const me = await fetchMe();
-    setUser(me);
+    setUser(await loadUserWithBilling(me));
+  }, [loadUserWithBilling]);
+
+  const refreshBilling = useCallback(async () => {
+    setBilling(await loadBillingSafe());
   }, []);
 
   const refreshBilling = useCallback(async () => {

@@ -42,4 +42,10 @@ export const siteConfig = {
   continueUrl: process.env.NEXT_PUBLIC_APP_CONTINUE_URL ?? "#",
   startingPrice: 499,
   googleSiteVerification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ?? "",
+  socialProfiles: [
+    process.env.NEXT_PUBLIC_SOCIAL_INSTAGRAM,
+    process.env.NEXT_PUBLIC_SOCIAL_YOUTUBE,
+    process.env.NEXT_PUBLIC_SOCIAL_LINKEDIN,
+    process.env.NEXT_PUBLIC_GOOGLE_BUSINESS_PROFILE,
+  ].filter((url): url is string => Boolean(url)),
 } as const;
