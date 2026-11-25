@@ -4,6 +4,7 @@ import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthProvider";
 import { Button } from "@/components/common/Button";
+import { DEFAULT_OWNER_PATH, resolvePostLoginPath } from "@/lib/postLoginPath";
 import { cn } from "@/lib/utils";
 
 type AuthMode = "login" | "signup";
@@ -13,7 +14,7 @@ interface AuthFormProps {
   nextPath?: string;
 }
 
-export function AuthForm({ initialMode = "login", nextPath = "/#pricing" }: AuthFormProps) {
+export function AuthForm({ initialMode = "login", nextPath = DEFAULT_OWNER_PATH }: AuthFormProps) {
   const router = useRouter();
   const { login, register } = useAuth();
   const [mode, setMode] = useState<AuthMode>(initialMode);
@@ -36,17 +37,19 @@ export function AuthForm({ initialMode = "login", nextPath = "/#pricing" }: Auth
 
     try {
       if (mode === "login") {
-        await login({ email: email.trim(), password });
+        const session = await login({ email: email.trim(), password });
+        router.replace(resolvePostLoginPath(session.user, nextPath));
       } else {
-        await register({
+        const result = await register({
           name: name.trim(),
           email: email.trim(),
           password,
           phone: phone.trim() || undefined,
           gymName: gymName.trim(),
         });
+        const next = encodeURIComponent(nextPath);
+        router.replace(`/verify-email?email=${encodeURIComponent(result.email)}&next=${next}`);
       }
-      router.replace(nextPath);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
     } finally {
@@ -84,7 +87,7 @@ export function AuthForm({ initialMode = "login", nextPath = "/#pricing" }: Auth
       </h1>
       <p className="mt-2 text-sm text-text-secondary">
         {mode === "login"
-          ? "Login to continue to plan checkout."
+          ? "Members go to check-in. Gym owners continue to plans."
           : "Sign up as a gym owner, then choose your plan."}
       </p>
 

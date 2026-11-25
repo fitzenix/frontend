@@ -37,7 +37,10 @@ export const metadata: Metadata = {
   creator: siteConfig.name,
   publisher: siteConfig.name,
   category: "Gym Management Software",
-  alternates: { canonical: "/" },
+  alternates: {
+    canonical: "/",
+    languages: { "en-IN": "/", "x-default": "/" },
+  },
   openGraph: {
     type: "website",
     locale: siteConfig.locale,
@@ -75,15 +78,25 @@ export const metadata: Metadata = {
     ? { google: siteConfig.googleSiteVerification }
     : undefined,
   icons: {
-    icon: [{ url: "/images/logo/favicon.png", type: "image/png" }],
-    shortcut: ["/images/logo/favicon.png"],
-    apple: [{ url: "/images/logo/favicon.png" }],
+    // Cache-bust (?v=) so browsers/CDN pick up the new red F mark immediately after deploy.
+    // Source: src/app/f_favicon.png → npm run generate:favicons
+    icon: [
+      { url: "/favicon.ico?v=20261121b", sizes: "any" },
+      { url: "/icons/icon-48.png?v=20261121b", sizes: "48x48", type: "image/png" },
+      { url: "/icons/icon-192.png?v=20261121b", sizes: "192x192", type: "image/png" },
+      { url: "/favicon.png?v=20261121b", sizes: "512x512", type: "image/png" },
+    ],
+    shortcut: ["/favicon.ico?v=20261121b"],
+    apple: [{ url: "/apple-touch-icon.png?v=20261121b", sizes: "180x180", type: "image/png" }],
   },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang={siteConfig.language} className={`${sans.variable} ${display.variable} h-full antialiased`}>
+    <html
+      lang={siteConfig.language}
+      className={`${sans.variable} ${display.variable} h-full antialiased`}
+    >
       <body className="flex min-h-full flex-col bg-background pb-16 font-sans text-text-primary md:pb-0">
         <AuthProvider>
           <Navbar />

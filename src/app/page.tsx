@@ -8,6 +8,7 @@ import { PricingSection } from "@/components/pricing/PricingSection";
 import { WhyFitzenix } from "@/components/sections/WhyFitzenix";
 import { SecuritySection } from "@/components/sections/SecuritySection";
 import { FAQSection } from "@/components/faq/FAQSection";
+import { SeoTopicLinks } from "@/components/seo/SeoTopicLinks";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 import { StickyMobileCTA } from "@/components/sections/StickyMobileCTA";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -21,7 +22,10 @@ import {
 export const metadata: Metadata = {
   title: { absolute: defaultTitle },
   description: defaultDescription,
-  alternates: { canonical: "/" },
+  alternates: {
+    canonical: "/",
+    languages: { "en-IN": "/", "x-default": "/" },
+  },
   openGraph: {
     title: defaultTitle,
     description: defaultDescription,
@@ -42,6 +46,7 @@ export default function HomePage() {
       <PricingSection />
       <WhyFitzenix />
       <SecuritySection />
+      <SeoTopicLinks />
       <FAQSection />
       <FinalCTA />
       <StickyMobileCTA />

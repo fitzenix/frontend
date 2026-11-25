@@ -4,7 +4,7 @@ import { AuthPageClient } from "@/components/auth/AuthPageClient";
 
 export const metadata: Metadata = {
   title: "Login / Sign up",
-  description: "Login or create your FITZENIX gym owner account before checkout.",
+  description: "Login to Fitzenix — members check in, gym owners manage plans.",
   robots: { index: false, follow: false },
 };
 

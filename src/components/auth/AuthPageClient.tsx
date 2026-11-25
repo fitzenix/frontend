@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthProvider";
 import { AuthForm } from "@/components/auth/AuthForm";
 import { LoadingSpinner } from "@/components/common/Loading";
+import { resolvePostLoginPath } from "@/lib/postLoginPath";
 
 interface AuthPageClientProps {
   nextPath: string;
@@ -13,13 +14,13 @@ interface AuthPageClientProps {
 
 export function AuthPageClient({ nextPath, initialMode }: AuthPageClientProps) {
   const router = useRouter();
-  const { isAuthenticated, loading } = useAuth();
+  const { user, isAuthenticated, loading } = useAuth();
 
   useEffect(() => {
     if (!loading && isAuthenticated) {
-      router.replace(nextPath);
+      router.replace(resolvePostLoginPath(user, nextPath));
     }
-  }, [loading, isAuthenticated, nextPath, router]);
+  }, [loading, isAuthenticated, nextPath, router, user]);
 
   if (loading) {
     return (

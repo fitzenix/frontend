@@ -4,7 +4,14 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { mainNavigation } from "@/config/navigation";
 import { useAuth } from "@/context/AuthProvider";
+import {
+  expiresOnLabel,
+  planDisplayName,
+  planPriceLabel,
+  remainingDaysLabel,
+} from "@/lib/billingDisplay";
 import { Button } from "@/components/common/Button";
+import { MEMBER_CHECK_IN_PATH } from "@/lib/postLoginPath";
 import { cn } from "@/lib/utils";
 
 interface MobileMenuProps {
@@ -13,7 +20,8 @@ interface MobileMenuProps {
 }
 
 export function MobileMenu({ open, onClose }: MobileMenuProps) {
-  const { isAuthenticated, loading, logout, user } = useAuth();
+  const { isAuthenticated, loading, logout, user, billing } = useAuth();
+  const isMember = user?.role === "member";
 
   useEffect(() => {
     if (!open) return;
@@ -23,6 +31,11 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
       document.body.style.overflow = previous;
     };
   }, [open]);
+
+  const planName = planDisplayName(billing);
+  const price = planPriceLabel(billing);
+  const daysLeft = remainingDaysLabel(billing);
+  const expiresOn = expiresOnLabel(billing);
 
   return (
     <div
@@ -66,10 +79,30 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
         <div className="mt-6 flex flex-col gap-3">
           {loading ? null : isAuthenticated ? (
             <>
-              <p className="px-1 text-sm text-text-secondary">Signed in as {user?.name}</p>
-              <Link href="/#pricing" onClick={onClose}>
-                <Button fullWidth>Choose a Plan</Button>
-              </Link>
+              <div className="rounded-xl border border-border bg-[#111111] px-3 py-3">
+                <p className="text-sm font-semibold text-white">{user?.name}</p>
+                {isMember ? (
+                  <p className="mt-1 text-xs text-text-secondary">Member check-in</p>
+                ) : billing ? (
+                  <p className="mt-1 text-xs text-text-secondary">
+                    {planName}
+                    {price ? ` · ${price}` : ""}
+                    {daysLeft ? ` · ${daysLeft}` : ""}
+                  </p>
+                ) : null}
+                {!isMember && expiresOn ? (
+                  <p className="mt-0.5 text-[11px] text-text-muted">Expires {expiresOn}</p>
+                ) : null}
+              </div>
+              {isMember ? (
+                <Link href={MEMBER_CHECK_IN_PATH} onClick={onClose}>
+                  <Button fullWidth>Check in</Button>
+                </Link>
+              ) : (
+                <Link href="/#pricing" onClick={onClose}>
+                  <Button fullWidth>View plans</Button>
+                </Link>
+              )}
               <Button
                 variant="outline"
                 fullWidth
