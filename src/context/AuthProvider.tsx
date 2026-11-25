@@ -189,10 +189,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setBilling(await loadBillingSafe());
   }, []);
 
-  const refreshBilling = useCallback(async () => {
-    setBilling(await loadBillingSafe());
-  }, []);
-
   const gymAccessLocked = Boolean(billing && !billing.access.allowed);
 
   const value = useMemo(

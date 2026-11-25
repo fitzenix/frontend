@@ -12,18 +12,6 @@ const includedFeatures = [
   "Bulk Import",
 ] as const;
 
-const includedFeatures = [
-  "Member Management",
-  "Attendance & QR Check-in",
-  "Trainer Management",
-  "Membership & Plans",
-  "Payments & Invoices",
-  "Reports & Analytics",
-  "Mobile Apps (Owner, Trainer, Member)",
-  "Notifications & CRM",
-  "Bulk Import",
-] as const;
-
 /** Single source of truth — matches Fitzenix owner billing plans + 14-day trial. */
 export const pricingPlans: PricingPlan[] = [
   {
