@@ -18,8 +18,6 @@ export function formatCurrency(
   switch (currency) {
     case "INR":
       return `₹${number}`;
-    case "USD":
-      return `$${number}`;
     default:
       return `${currency} ${number}`;
   }

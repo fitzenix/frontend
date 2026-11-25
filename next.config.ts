@@ -24,15 +24,6 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  /** Local Frontend → proxy → API origin (avoids CORS on localhost:3000) */
-  async rewrites() {
-    return [
-      {
-        source: "/backend-api/:path*",
-        destination: `${API_ORIGIN}/:path*`,
-      },
-    ];
-  },
   async headers() {
     return [
       {
